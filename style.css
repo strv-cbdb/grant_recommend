@@ -1842,7 +1842,32 @@ select:focus {
   }
 
   .card-footer__right {
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  /* ベルアイコンは右端に寄せて自動幅を維持 */
+  .card-footer__right .btn-icon {
+    align-self: flex-end;
+    width: auto;
+  }
+
+  /* アクションボタンは中央揃えのフルサイズ */
+  .card-footer__right .btn-outline,
+  .card-footer__right .btn-primary {
+    text-align: center;
+  }
+
+  /* バッジ・タグの折り返しを許可 */
+  .card-header__badges {
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
+
+  /* プロフィールサマリーのタグ折り返し */
+  .profile-summary__tags {
+    flex-wrap: wrap;
   }
 
   .stats-card__value {

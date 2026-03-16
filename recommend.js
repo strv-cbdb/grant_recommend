@@ -88,11 +88,20 @@ function parseCSVRow(line) {
 }
 
 // ===================================
+// 画面幅に応じたCSVパスの切り替え
+// ===================================
+function getCSVPath() {
+  // 768px以下をSP扱いとして専用CSVを使用
+  return window.innerWidth <= 768 ? 'subsidies_sp.csv' : 'subsidies.csv';
+}
+
+// ===================================
 // CSVの読み込み
 // ===================================
 async function loadSubsidies() {
+  const csvPath = getCSVPath();
   try {
-    const response = await fetch('subsidies.csv');
+    const response = await fetch(csvPath);
     if (!response.ok) throw new Error('CSVの読み込みに失敗しました');
     const text = await response.text();
     return parseCSV(text);
@@ -760,6 +769,25 @@ async function init() {
   const firstTab = document.getElementById('tabRecommend');
   if (firstTab) firstTab.style.display = 'block';
 }
+
+// ===================================
+// 画面リサイズ時のCSV切り替え
+// SP/PCブレークポイントをまたいだときのみ再初期化する
+// ===================================
+let _resizeTimer = null;
+let _lastIsSP = window.innerWidth <= 768;
+
+window.addEventListener('resize', function () {
+  clearTimeout(_resizeTimer);
+  _resizeTimer = setTimeout(function () {
+    const isSP = window.innerWidth <= 768;
+    // ブレークポイントをまたいだ場合のみ再初期化
+    if (isSP !== _lastIsSP) {
+      _lastIsSP = isSP;
+      init();
+    }
+  }, 500);
+});
 
 // ===================================
 // DOMContentLoaded
