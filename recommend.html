@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="あなたのプロフィールに基づいた補助金・支援制度のおすすめ診断結果です。" />
+  <title>診断結果 - あなたへのおすすめ制度 | SubsidyAI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ローディングオーバーレイ -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="loading-overlay__logo">SubsidyAI</div>
+    <div class="loading-spinner"></div>
+    <div class="loading-overlay__text">AIが最適な制度を分析中...</div>
+  </div>
+
+  <!-- ヘッダー -->
+  <header class="header">
+    <div class="header__inner">
+      <a href="index.html" class="header__logo">
+        <span class="header__logo-text">SubsidyAI</span>
+        <span class="header__logo-tagline">補助金・支援制度 AIレコメンド</span>
+      </a>
+      <nav class="header__nav">
+        <a href="index.html" class="header__back">
+          ← 入力に戻る
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ページ本体 -->
+  <main class="page-wrapper">
+    <div class="container" style="padding-top: var(--space-8); padding-bottom: var(--space-16);">
+
+      <!-- 通知バナー -->
+      <div id="notificationBanner" class="notification-banner">
+        <span class="notification-banner__icon">🔔</span>
+        <span class="notification-banner__text">
+          新しい制度が追加されたときに通知を受け取りますか？
+          あなたに関係する制度の情報をお届けします。
+        </span>
+        <label class="toggle-switch" style="flex-shrink:0;">
+          <input type="checkbox" id="globalNotificationToggle" />
+          <span class="toggle-slider"></span>
+        </label>
+        <span id="notificationSetBadge" class="badge badge--green" style="display:none; flex-shrink:0;">設定済み</span>
+        <button
+          id="notificationBannerClose"
+          class="notification-banner__close"
+          aria-label="バナーを閉じる"
+          title="閉じる"
+        >✕</button>
+      </div>
+
+      <!-- プロフィールサマリー -->
+      <div id="profileSummary" class="profile-summary">
+        <!-- recommend.js により動的生成 -->
+        <span class="profile-summary__label">読み込み中...</span>
+      </div>
+
+      <!-- 統計セクション -->
+      <section id="statsSection">
+        <div class="stats-grid">
+          <div class="stats-card">
+            <div class="stats-card__icon stats-card__icon--blue">📋</div>
+            <div class="stats-card__value" id="statTotal">—</div>
+            <div class="stats-card__label">マッチした制度</div>
+            <div class="stats-card__sub">スコア30以上</div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-card__icon stats-card__icon--green">⚡</div>
+            <div class="stats-card__value" id="statNow">—</div>
+            <div class="stats-card__label">今すぐ申請可能</div>
+            <div class="stats-card__sub">緊急度：高</div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-card__icon stats-card__icon--orange">📅</div>
+            <div class="stats-card__value" id="statFuture">—</div>
+            <div class="stats-card__label">将来活用できる</div>
+            <div class="stats-card__sub">緊急度：低</div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-card__icon stats-card__icon--cyan">✦</div>
+            <div class="stats-card__value" id="statTop" style="font-size: var(--font-size-sm); line-height: var(--line-height-snug);">—</div>
+            <div class="stats-card__label">最高スコアの制度</div>
+            <div class="stats-card__sub">AIトップピック</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- フィルターバー -->
+      <div class="filter-bar">
+        <!-- 検索 -->
+        <div class="filter-bar__search">
+          <span class="filter-bar__search-icon">🔍</span>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="制度名・キーワードで検索"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="filter-bar__divider"></div>
+
+        <!-- ソート -->
+        <div class="filter-bar__select">
+          <select id="sortSelect" aria-label="並び替え">
+            <option value="score">おすすめ順</option>
+            <option value="amount">金額が多い順</option>
+            <option value="difficulty">申請しやすい順</option>
+            <option value="urgency">緊急度順</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- カテゴリフィルターチップ -->
+      <div class="filter-chips" id="categoryFilter" style="margin-bottom: var(--space-5);">
+        <button class="filter-chip active" data-category="全て">全て</button>
+        <button class="filter-chip" data-category="子育て">👶 子育て</button>
+        <button class="filter-chip" data-category="住宅">🏠 住宅</button>
+        <button class="filter-chip" data-category="移住">🗾 移住</button>
+        <button class="filter-chip" data-category="起業">🚀 起業</button>
+        <button class="filter-chip" data-category="就業">💼 就業</button>
+        <button class="filter-chip" data-category="介護">🏥 介護</button>
+        <button class="filter-chip" data-category="生活支援">💴 生活支援</button>
+      </div>
+
+      <!-- タブナビゲーション -->
+      <nav class="tab-nav" role="tablist">
+        <button
+          class="tab-btn active"
+          data-tab="recommend"
+          role="tab"
+          aria-selected="true"
+          aria-controls="tabRecommend"
+        >
+          ✦ あなたにおすすめ
+          <span class="tab-count" id="tabCountRecommend">0</span>
+        </button>
+        <button
+          class="tab-btn"
+          data-tab="now"
+          role="tab"
+          aria-selected="false"
+          aria-controls="tabNow"
+        >
+          ⚡ すぐ受け取れそう
+          <span class="tab-count" id="tabCountNow">0</span>
+        </button>
+        <button
+          class="tab-btn"
+          data-tab="future"
+          role="tab"
+          aria-selected="false"
+          aria-controls="tabFuture"
+        >
+          📅 将来・条件次第
+          <span class="tab-count" id="tabCountFuture">0</span>
+        </button>
+      </nav>
+
+      <!-- タブコンテンツ：おすすめ -->
+      <div
+        id="tabRecommend"
+        class="tab-content"
+        role="tabpanel"
+        aria-labelledby="tab-recommend"
+        style="display: block;"
+      >
+        <!-- スケルトン（初期表示） -->
+        <div class="cards-list" id="skeletonRecommend">
+          <div class="skeleton-card">
+            <div class="skeleton skeleton-line skeleton-line--medium" style="margin-bottom: 8px; height: 20px;"></div>
+            <div style="display:flex; gap: 8px; margin-bottom: 12px;">
+              <div class="skeleton skeleton-line" style="width: 60px; height: 20px;"></div>
+              <div class="skeleton skeleton-line" style="width: 80px; height: 20px;"></div>
+            </div>
+            <div class="skeleton skeleton-block" style="margin-bottom: 12px;"></div>
+            <div class="skeleton skeleton-line skeleton-line--full" style="margin-bottom: 6px; height: 14px;"></div>
+            <div class="skeleton skeleton-line skeleton-line--medium" style="height: 14px;"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton skeleton-line skeleton-line--medium" style="margin-bottom: 8px; height: 20px;"></div>
+            <div style="display:flex; gap: 8px; margin-bottom: 12px;">
+              <div class="skeleton skeleton-line" style="width: 70px; height: 20px;"></div>
+              <div class="skeleton skeleton-line" style="width: 90px; height: 20px;"></div>
+            </div>
+            <div class="skeleton skeleton-block" style="margin-bottom: 12px;"></div>
+            <div class="skeleton skeleton-line skeleton-line--full" style="margin-bottom: 6px; height: 14px;"></div>
+            <div class="skeleton skeleton-line" style="width: 60%; height: 14px;"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton skeleton-line skeleton-line--medium" style="margin-bottom: 8px; height: 20px;"></div>
+            <div style="display:flex; gap: 8px; margin-bottom: 12px;">
+              <div class="skeleton skeleton-line" style="width: 65px; height: 20px;"></div>
+              <div class="skeleton skeleton-line" style="width: 75px; height: 20px;"></div>
+            </div>
+            <div class="skeleton skeleton-block" style="margin-bottom: 12px;"></div>
+            <div class="skeleton skeleton-line skeleton-line--full" style="margin-bottom: 6px; height: 14px;"></div>
+            <div class="skeleton skeleton-line skeleton-line--short" style="height: 14px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- タブコンテンツ：すぐ受け取れそう -->
+      <div
+        id="tabNow"
+        class="tab-content"
+        role="tabpanel"
+        aria-labelledby="tab-now"
+        style="display: none;"
+      >
+        <!-- recommend.js により動的生成 -->
+      </div>
+
+      <!-- タブコンテンツ：将来・条件次第 -->
+      <div
+        id="tabFuture"
+        class="tab-content"
+        role="tabpanel"
+        aria-labelledby="tab-future"
+        style="display: none;"
+      >
+        <!-- recommend.js により動的生成 -->
+      </div>
+
+      <!-- 空の状態テンプレート（非表示） -->
+      <div id="emptyState" class="empty-state" style="display: none;" aria-hidden="true">
+        <div class="empty-state__icon">🔍</div>
+        <div class="empty-state__title">該当する制度が見つかりませんでした</div>
+        <div class="empty-state__text">
+          検索条件やフィルターを変更してお試しください。<br>
+          または<a href="index.html" style="color: var(--color-secondary); text-decoration: underline;">入力情報を変更</a>することでより多くの制度が表示される場合があります。
+        </div>
+      </div>
+
+    </div>
+    <!-- /container -->
+  </main>
+
+  <script src="recommend.js"></script>
+</body>
+</html>

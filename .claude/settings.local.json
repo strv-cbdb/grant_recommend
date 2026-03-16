@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Read(//tmp/**)",
+      "Bash(unzip -q /home/user/projects/kva-api-php/api.xlsx -d xlsx_extract)"
+    ]
+  }
+}
