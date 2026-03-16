@@ -324,18 +324,20 @@ function renderSubsidyCard(subsidy, score) {
       </div>
 
       <div class="card-footer">
-        <div class="card-footer__left">
-          <div class="card-meta__item" style="font-size: 0.75rem; color: var(--color-text-muted);">
-            <span>${subsidy.tags.split('|').join(' / ')}</span>
+        <div class="card-meta-header">
+          <div class="card-footer__left">
+            <div class="card-meta__item" style="font-size: 0.75rem; color: var(--color-text-muted);">
+              <span>${subsidy.tags.split('|').join(' / ')}</span>
+            </div>
           </div>
-        </div>
-        <div class="card-footer__right">
           <button
             class="btn-icon ${bellActiveCls}"
             title="${bellLabel}"
             onclick="toggleNotification('${subsidy.id}', this)"
             aria-label="${bellLabel}"
           >${bellIcon}</button>
+        </div>
+        <div class="card-footer__right">
           <a href="${subsidy.official_url}" class="btn-outline btn-small" target="_blank" rel="noopener">
             公式サイト
           </a>
