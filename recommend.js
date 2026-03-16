@@ -326,7 +326,6 @@ function renderSubsidyCard(subsidy, score) {
       <div class="card-footer">
         <div class="card-footer__left">
           <div class="card-meta__item" style="font-size: 0.75rem; color: var(--color-text-muted);">
-            <span>🏷</span>
             <span>${subsidy.tags.split('|').join(' / ')}</span>
           </div>
         </div>
