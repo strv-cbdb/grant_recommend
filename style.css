@@ -1780,24 +1780,70 @@ select:focus {
   .filter-bar {
     flex-direction: column;
     align-items: stretch;
+    padding: var(--space-3) var(--space-4);
+    gap: var(--space-3);
   }
 
   .filter-bar__search {
     min-width: 0;
+    width: 100%;
+  }
+
+  .filter-bar__divider {
+    display: none;
+  }
+
+  .filter-bar__select {
+    width: 100%;
+  }
+
+  .filter-bar__select select {
+    width: 100%;
+  }
+
+  .filter-chips {
+    gap: var(--space-1);
+    margin-bottom: var(--space-4) !important;
+  }
+
+  .filter-chip {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+  }
+
+  .tab-nav {
+    margin-bottom: var(--space-4);
   }
 
   .tab-btn {
-    padding: var(--space-3) var(--space-4);
-    font-size: var(--font-size-xs);
+    padding: var(--space-3) var(--space-3);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    gap: var(--space-1);
+  }
+
+  .tab-count {
+    min-width: 18px;
+    height: 18px;
+    font-size: 10px;
   }
 
   .card-header {
     flex-direction: column;
-    gap: var(--space-3);
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-4) var(--space-3);
   }
 
   .card-header__score {
-    align-self: flex-end;
+    align-self: flex-start;
+  }
+
+  .card-body {
+    padding: var(--space-4) var(--space-4);
+  }
+
+  .card-footer {
+    padding: var(--space-3) var(--space-4);
   }
 
   .header__nav .header__back {
@@ -1877,5 +1923,204 @@ select:focus {
   .btn-primary--large {
     padding: var(--space-4) var(--space-6);
     font-size: var(--font-size-base);
+  }
+}
+
+/* ===================================
+   SP専用調整（recommend.html）
+   =================================== */
+@media (max-width: 768px) {
+
+  /* --- ページ全体の余白 --- */
+  .page-wrapper .container {
+    padding-top: var(--space-5) !important;
+    padding-bottom: var(--space-10) !important;
+  }
+
+  /* --- 通知バナー --- */
+  .notification-banner {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--font-size-xs);
+  }
+
+  .notification-banner__text {
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-normal);
+  }
+
+  /* --- 統計グリッド --- */
+  .stats-grid {
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+  }
+
+  .stats-card {
+    padding: var(--space-3) var(--space-3);
+  }
+
+  .stats-card__icon {
+    font-size: 1.25rem;
+    margin-bottom: var(--space-1);
+  }
+
+  .stats-card__value {
+    font-size: var(--font-size-xl);
+  }
+
+  .stats-card__label {
+    font-size: 0.7rem;
+  }
+
+  .stats-card__sub {
+    font-size: 0.65rem;
+  }
+
+  /* --- フィルターバー --- */
+  .filter-bar {
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-3);
+  }
+
+  .filter-bar__search input {
+    font-size: var(--font-size-base); /* iOSズーム防止: 16px以上 */
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-2);
+  }
+
+  .filter-bar__select select {
+    font-size: var(--font-size-base); /* iOSズーム防止: 16px以上 */
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-2);
+    padding-left: var(--space-3);
+    padding-right: var(--space-8);
+  }
+
+  /* --- カテゴリチップ --- */
+  .filter-chips {
+    row-gap: var(--space-1);
+    column-gap: var(--space-1);
+  }
+
+  .filter-chip {
+    padding: 5px var(--space-3);
+    font-size: 0.75rem;
+    border-radius: var(--radius-full);
+    line-height: 1.2;
+  }
+
+  /* --- タブナビ --- */
+  .tab-nav {
+    /* スクロールバー非表示 */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .tab-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab-btn {
+    padding: var(--space-3) var(--space-3);
+    font-size: 0.75rem;
+    min-width: 0;
+    flex-shrink: 0;
+    gap: var(--space-1);
+  }
+
+  .tab-btn.active {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .tab-count {
+    min-width: 18px;
+    height: 18px;
+    padding: 0 3px;
+    font-size: 10px;
+  }
+
+  /* --- 制度カード: ヘッダー --- */
+  .card-header {
+    padding: var(--space-4) var(--space-4) var(--space-3);
+    gap: var(--space-2);
+  }
+
+  .card-header__name {
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-2);
+  }
+
+  .card-header__badges {
+    gap: var(--space-1);
+    row-gap: var(--space-1);
+  }
+
+  /* スコア円: 左寄せ・やや小さく */
+  .card-header__score {
+    align-self: flex-start;
+  }
+
+  .match-score__circle {
+    width: 44px;
+    height: 44px;
+    font-size: 0.8125rem;
+  }
+
+  .match-score__label {
+    font-size: 9px;
+  }
+
+  /* --- 制度カード: ボディ --- */
+  .card-body {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .card-amount {
+    padding: var(--space-2) var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .card-amount__value {
+    font-size: var(--font-size-base);
+  }
+
+  .card-summary {
+    font-size: 0.8125rem;
+    margin-bottom: var(--space-2);
+  }
+
+  .card-reason {
+    padding: var(--space-2) var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .card-reason__text {
+    font-size: 0.75rem;
+  }
+
+  .card-meta {
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  /* --- 制度カード: フッター --- */
+  .card-footer {
+    padding: var(--space-3) var(--space-4);
+    gap: var(--space-2);
+  }
+
+  /* --- カードリスト間隔 --- */
+  .cards-list {
+    gap: var(--space-3);
+  }
+
+  /* --- セクション間余白 --- */
+  #statsSection {
+    margin-bottom: var(--space-4);
+  }
+
+  #categoryFilter {
+    margin-bottom: var(--space-3) !important;
   }
 }
