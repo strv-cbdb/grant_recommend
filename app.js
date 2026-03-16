@@ -1,5 +1,5 @@
 /**
- * SubsidyAI - 入力フォームスクリプト
+ * BenefitAI - 入力フォームスクリプト
  * ユーザープロフィールの収集とlocalStorageへの保存
  */
 
