@@ -2394,3 +2394,209 @@ select:focus {
     border: none;
   }
 }
+
+/* ===================================
+   SP アプリ風UI 追加強化（第2弾）
+   =================================== */
+@media (max-width: 768px) {
+
+  /* ========== ページ基盤 ========== */
+
+  /* iOSのゴムバウンスを抑制し、ネイティブアプリに近い挙動に */
+  body {
+    overscroll-behavior-y: none;
+  }
+
+  /* タップ時の青ハイライト・300ms遅延を除去 */
+  button, a, .chip, .filter-chip, .tab-btn, label, .subsidy-card {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  /* ========== セーフエリア対応（iPhone ノッチ・ホームバー） ========== */
+
+  /* ヘッダーをステータスバー分だけ高くして重ならないようにする */
+  .header {
+    padding-top: env(safe-area-inset-top, 0px);
+    height: calc(56px + env(safe-area-inset-top, 0px));
+  }
+
+  /* ページ全体のパディングもヘッダー高さに合わせる */
+  .page-wrapper {
+    padding-top: calc(56px + env(safe-area-inset-top, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* ========== ヒーローセクション ========== */
+
+  /* SPではコンパクトなアプリバナー風に縮小 */
+  .hero {
+    padding: var(--space-8) var(--space-4) var(--space-10);
+  }
+
+  .hero__badge {
+    margin-bottom: var(--space-3);
+    padding: var(--space-1) var(--space-3);
+    font-size: 0.75rem;
+  }
+
+  .hero__title {
+    font-size: 1.375rem;
+    margin-bottom: var(--space-3);
+    letter-spacing: -0.01em;
+  }
+
+  .hero__subtitle {
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-5);
+  }
+
+  .hero__stat-value {
+    font-size: var(--font-size-xl);
+  }
+
+  /* ========== タブナビゲーション ========== */
+
+  /* iOS Segmented Control風のピル型タブに変更（下線廃止） */
+  .tab-nav {
+    background: var(--color-background);
+    border-radius: var(--radius-xl);
+    padding: var(--space-1);
+    border-bottom: none;
+    gap: var(--space-1);
+    margin-bottom: var(--space-4);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .tab-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab-btn {
+    flex: 1;
+    justify-content: center;
+    border-radius: var(--radius-lg);
+    border-bottom: none;
+    margin-bottom: 0;
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    min-width: 80px;
+  }
+
+  /* アクティブタブ: 白背景 + 影でリフトアップ */
+  .tab-btn.active {
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    border-bottom-color: transparent;
+    box-shadow: var(--shadow-sm);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .tab-btn.active .tab-count {
+    background: rgba(37, 99, 235, 0.08);
+    color: var(--color-secondary);
+  }
+
+  /* ========== プロフィールサマリー ========== */
+
+  /* ボーダー廃止・シャドウカードに */
+  .profile-summary {
+    border: none;
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-xl);
+    padding: var(--space-3) var(--space-4);
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+
+  /* タグを横スクロールに（折り返さない） */
+  .profile-summary__tags {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 2px;
+  }
+
+  .profile-summary__tags::-webkit-scrollbar {
+    display: none;
+  }
+
+  .profile-tag {
+    flex-shrink: 0;
+  }
+
+  /* ========== 通知バナー ========== */
+
+  /* アプリのシステムアラート風コンパクトデザイン */
+  .notification-banner {
+    border: none;
+    background: rgba(27, 79, 138, 0.06);
+    border-radius: var(--radius-xl);
+    box-shadow: none;
+    padding: var(--space-3) var(--space-4);
+    margin-bottom: var(--space-3);
+  }
+
+  /* ========== フォームカード ========== */
+
+  /* ボーダー廃止・シャドウカードに統一 */
+  .form-card {
+    border: none;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* フォームセクション間の余白を詰める */
+  .form-section {
+    margin-bottom: var(--space-6);
+  }
+
+  /* 入力フィールドの高さをタップしやすく調整 */
+  .input,
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  select,
+  textarea {
+    min-height: 44px;
+  }
+
+  /* チップ（入力フォームの選択肢）をタップしやすく */
+  .chip {
+    min-height: 40px;
+    padding: var(--space-2) var(--space-4);
+  }
+
+  /* ========== 送信ボタンエリア（下部CTA風） ========== */
+
+  /* フォームの送信ボタンエリアを下部固定のCTAバー風に */
+  .form-card .form-footer {
+    position: sticky;
+    bottom: 0;
+    background: var(--color-surface);
+    margin: var(--space-8) calc(-1 * var(--space-5)) 0;
+    padding: var(--space-4) var(--space-5);
+    padding-bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--color-border);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.07);
+    border-radius: 0;
+    z-index: 10;
+  }
+
+  /* ========== スクロール感 ========== */
+
+  /* カードリスト: 下部に余白を確保してコンテンツが途切れて見えないように */
+  .cards-list {
+    padding-bottom: var(--space-6);
+  }
+
+  /* 制度詳細セクション: ボーダー廃止・シャドウカードに */
+  .detail-section {
+    border: none;
+    box-shadow: var(--shadow-md);
+  }
+}
