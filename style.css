@@ -2221,3 +2221,176 @@ select:focus {
     padding: var(--space-5) var(--space-4);
   }
 }
+
+/* ===================================
+   SP アプリ風UI強化（max-width: 768px）
+   =================================== */
+@media (max-width: 768px) {
+
+  /* --- ヘッダー: アプリのナビバー風 --- */
+  :root {
+    --header-height: 56px;
+  }
+
+  .header {
+    box-shadow: 0 1px 0 var(--color-border);
+  }
+
+  .header__inner {
+    padding: 0 var(--space-4);
+  }
+
+  .header__logo-tagline {
+    display: none;
+  }
+
+  .header__logo-text {
+    font-size: var(--font-size-lg);
+  }
+
+  /* ヘルプリンクを非表示、ナビをコンパクトに */
+  .header__nav a:not(.btn-nav-primary):not(.header__back) {
+    display: none;
+  }
+
+  .header__nav .btn-nav-primary {
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--font-size-xs);
+    border-radius: var(--radius-md);
+    box-shadow: none;
+  }
+
+  /* 戻るボタン: アプリのバックナビ風 */
+  .header__back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-secondary);
+    padding: var(--space-2) var(--space-2);
+    border-radius: var(--radius-md);
+    background: none;
+  }
+
+  /* --- 検索・フィルターエリア: アプリのサーチカード風 --- */
+  .filter-bar {
+    border: none;
+    box-shadow: var(--shadow-md);
+    border-radius: var(--radius-xl);
+    padding: var(--space-4);
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .filter-bar__search input {
+    height: 44px;
+    background: var(--color-background);
+    border-color: transparent;
+    border-radius: var(--radius-lg);
+    font-size: 16px; /* iOSズーム防止 */
+    padding-left: 40px;
+  }
+
+  .filter-bar__search input:focus {
+    background: var(--color-surface);
+    border-color: var(--color-secondary);
+  }
+
+  .filter-bar__select select {
+    height: 44px;
+    background-color: var(--color-background);
+    border-color: transparent;
+    border-radius: var(--radius-lg);
+    font-size: 16px; /* iOSズーム防止 */
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .filter-bar__select select:focus {
+    background-color: var(--color-surface);
+    border-color: var(--color-secondary);
+  }
+
+  /* --- カテゴリチップ: 横スクロール・アプリフィルター風 --- */
+  .filter-chips {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    gap: var(--space-2) !important;
+    padding-bottom: var(--space-1);
+    margin-bottom: 0 !important;
+  }
+
+  .filter-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-chip {
+    flex-shrink: 0;
+    height: 34px;
+    padding: 0 var(--space-4) !important;
+    font-size: var(--font-size-xs) !important;
+    font-weight: var(--font-weight-medium);
+    display: inline-flex;
+    align-items: center;
+    border-radius: var(--radius-full) !important;
+    white-space: nowrap;
+    transition: all var(--transition-fast);
+    line-height: 1;
+  }
+
+  /* 選択中チップ: 塗りつぶしスタイル（より明確な選択表示） */
+  .filter-chip.active {
+    background: var(--color-secondary) !important;
+    border-color: var(--color-secondary) !important;
+    color: white !important;
+    font-weight: var(--font-weight-semibold);
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+  }
+
+  /* --- カード: アプリカード風（影を少し強め） --- */
+  .subsidy-card {
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    border: none;
+  }
+
+  .subsidy-card[data-urgency="high"],
+  .subsidy-card[data-urgency="medium"],
+  .subsidy-card[data-urgency="low"] {
+    border-left-width: 4px;
+    border-left-style: solid;
+  }
+
+  .subsidy-card[data-urgency="high"] {
+    border-left-color: var(--color-danger);
+  }
+
+  .subsidy-card[data-urgency="medium"] {
+    border-left-color: var(--color-warning);
+  }
+
+  .subsidy-card[data-urgency="low"] {
+    border-left-color: var(--color-border-dark);
+  }
+
+  /* ホバーエフェクトはSPでは無効化（タップ操作のため） */
+  .subsidy-card:hover {
+    transform: none;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* --- 制度詳細ページ: ヒーロー --- */
+  .detail-hero {
+    border-radius: var(--radius-xl);
+  }
+
+  .detail-action-card {
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    border: none;
+  }
+}
