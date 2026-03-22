@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="補助金・支援制度の詳細情報 | BenefitAI" />
+  <title>制度詳細 | BenefitAI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header class="header">
+    <div class="header__inner">
+      <a href="index.html" class="header__logo">
+        <span class="header__logo-text">BenefitAI</span>
+        <span class="header__logo-tagline">補助金・支援制度 AIレコメンド</span>
+      </a>
+      <nav class="header__nav">
+        <a href="recommend.html" class="header__back">
+          ← 診断結果に戻る
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ページ本体 -->
+  <main class="page-wrapper">
+    <div class="container" style="padding-top: var(--space-8); padding-bottom: var(--space-16);">
+
+      <!-- ローディング -->
+      <div id="detailLoading" class="detail-loading">
+        <div class="loading-spinner" style="margin: 0 auto var(--space-4);"></div>
+        <p style="color: var(--color-text-muted); font-size: var(--font-size-sm);">制度情報を読み込み中...</p>
+      </div>
+
+      <!-- 詳細コンテンツ（detail.js により動的生成） -->
+      <div id="detailContent" style="display: none;"></div>
+
+    </div>
+  </main>
+
+  <script src="detail.js"></script>
+</body>
+</html>

@@ -198,10 +198,6 @@ function scoreSubsidy(subsidy, profile) {
 // カードレンダリング
 // ===================================
 function renderSubsidyCard(subsidy, score) {
-  // スコアレベルの判定
-  const scoreLevel = score >= 80 ? 'high' : score >= 60 ? 'medium' : 'low';
-  const scoreColorClass = `match-score__circle--${scoreLevel}`;
-
   // 緊急度バッジ
   const urgencyMap = {
     high: { label: '緊急度：高', cls: 'badge--red pulse', dot: '🔴' },
@@ -283,12 +279,6 @@ function renderSubsidyCard(subsidy, score) {
             ${categoryBadges}
             <span class="badge ${urgencyInfo.cls}">${urgencyInfo.label}</span>
             ${aiBadge}
-          </div>
-        </div>
-        <div class="card-header__score">
-          <div class="match-score">
-            <div class="match-score__circle ${scoreColorClass}">${score}</div>
-            <div class="match-score__label">マッチ度</div>
           </div>
         </div>
       </div>
@@ -578,9 +568,7 @@ window.toggleNotification = function (subsidyId, btn) {
 // 詳細表示（デモ用）
 // ===================================
 window.showDetail = function (subsidyId) {
-  const subsidy = allSubsidies.find(s => s.id === subsidyId);
-  if (!subsidy) return;
-  alert(`【${subsidy.subsidy_name}】\n\n${subsidy.summary}\n\n支援額: ${subsidy.amount}\n\n${subsidy.reason}`);
+  window.location.href = `detail.html?id=${subsidyId}`;
 };
 
 // ===================================
@@ -755,7 +743,6 @@ async function init() {
 
   // UI更新
   renderProfileSummary();
-  updateStats();
   setupTabs();
   setupCategoryFilter();
   setupSearch();

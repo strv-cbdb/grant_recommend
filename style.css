@@ -730,78 +730,6 @@ select:focus {
 }
 
 /* ===================================
-   統計サマリーカード（スタッツ）
-   =================================== */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-4);
-  margin-bottom: var(--space-8);
-}
-
-.stats-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  padding: var(--space-5) var(--space-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  box-shadow: var(--shadow-sm);
-  transition: all var(--transition-normal);
-}
-
-.stats-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
-
-.stats-card__icon {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  margin-bottom: var(--space-2);
-}
-
-.stats-card__icon--blue {
-  background: rgba(37, 99, 235, 0.1);
-}
-
-.stats-card__icon--green {
-  background: rgba(16, 185, 129, 0.1);
-}
-
-.stats-card__icon--orange {
-  background: rgba(245, 158, 11, 0.1);
-}
-
-.stats-card__icon--cyan {
-  background: rgba(6, 182, 212, 0.1);
-}
-
-.stats-card__value {
-  font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
-  line-height: 1;
-}
-
-.stats-card__label {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-  font-weight: var(--font-weight-medium);
-}
-
-.stats-card__sub {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
-}
-
-/* ===================================
    補助金カード
    =================================== */
 .subsidy-card {
@@ -859,10 +787,6 @@ select:focus {
   flex-wrap: wrap;
   gap: var(--space-2);
   align-items: center;
-}
-
-.card-header__score {
-  flex-shrink: 0;
 }
 
 .card-body {
@@ -1013,52 +937,6 @@ select:focus {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-}
-
-/* ===================================
-   マッチスコア
-   =================================== */
-.match-score {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-}
-
-.match-score__circle {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-bold);
-  border: 3px solid;
-}
-
-.match-score__circle--high {
-  border-color: var(--color-success);
-  background: var(--color-success-light);
-  color: #059669;
-}
-
-.match-score__circle--medium {
-  border-color: var(--color-info);
-  background: var(--color-info-light);
-  color: #1D4ED8;
-}
-
-.match-score__circle--low {
-  border-color: var(--color-border-dark);
-  background: #F8FAFC;
-  color: var(--color-text-muted);
-}
-
-.match-score__label {
-  font-size: 10px;
-  color: var(--color-text-muted);
-  white-space: nowrap;
 }
 
 /* プログレスバー（スコア用） */
@@ -1694,17 +1572,6 @@ select:focus {
   border-top: 1px solid var(--color-border);
 }
 
-.form-footer__note {
-  text-align: center;
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
-  margin-top: var(--space-4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-}
-
 /* ===================================
    セクション区切り
    =================================== */
@@ -1840,10 +1707,6 @@ select:focus {
     padding: var(--space-4) var(--space-4) var(--space-3);
   }
 
-  .card-header__score {
-    align-self: flex-start;
-  }
-
   .card-body {
     padding: var(--space-4) var(--space-4);
   }
@@ -1867,10 +1730,6 @@ select:focus {
 
   .header__logo-tagline {
     display: none;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
   }
 
   .hero__stats {
@@ -1922,10 +1781,6 @@ select:focus {
     flex-wrap: wrap;
   }
 
-  .stats-card__value {
-    font-size: var(--font-size-2xl);
-  }
-
   .btn-primary--large {
     padding: var(--space-4) var(--space-6);
     font-size: var(--font-size-base);
@@ -1954,33 +1809,6 @@ select:focus {
   .notification-banner__text {
     font-size: var(--font-size-xs);
     line-height: var(--line-height-normal);
-  }
-
-  /* --- 統計グリッド --- */
-  .stats-grid {
-    gap: var(--space-2);
-    margin-bottom: var(--space-4);
-  }
-
-  .stats-card {
-    padding: var(--space-3) var(--space-3);
-  }
-
-  .stats-card__icon {
-    font-size: 1.25rem;
-    margin-bottom: var(--space-1);
-  }
-
-  .stats-card__value {
-    font-size: var(--font-size-xl);
-  }
-
-  .stats-card__label {
-    font-size: 0.7rem;
-  }
-
-  .stats-card__sub {
-    font-size: 0.65rem;
   }
 
   /* --- フィルターバー --- */
@@ -2060,21 +1888,6 @@ select:focus {
   .card-header__badges {
     gap: var(--space-1);
     row-gap: var(--space-1);
-  }
-
-  /* スコア円: 左寄せ・やや小さく */
-  .card-header__score {
-    align-self: flex-start;
-  }
-
-  .match-score__circle {
-    width: 44px;
-    height: 44px;
-    font-size: 0.8125rem;
-  }
-
-  .match-score__label {
-    font-size: 9px;
   }
 
   /* --- 制度カード: ボディ --- */
@@ -2181,11 +1994,228 @@ select:focus {
   }
 
   /* --- セクション間余白 --- */
-  #statsSection {
-    margin-bottom: var(--space-4);
-  }
-
   #categoryFilter {
     margin-bottom: var(--space-3) !important;
+  }
+}
+
+/* ===================================
+   制度詳細ページ（detail.html）
+   =================================== */
+.detail-loading {
+  text-align: center;
+  padding: var(--space-16) 0;
+}
+
+.detail-back {
+  margin-bottom: var(--space-6);
+}
+
+.detail-hero {
+  margin-bottom: var(--space-8);
+  padding: var(--space-8) var(--space-8) var(--space-7);
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+  border-radius: var(--radius-2xl);
+  color: white;
+}
+
+.detail-hero__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.detail-hero__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+  margin-bottom: var(--space-3);
+  color: white;
+}
+
+.detail-hero__summary {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: var(--space-8);
+  align-items: start;
+}
+
+.detail-section {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  margin-bottom: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.detail-section:last-child {
+  margin-bottom: 0;
+}
+
+.detail-section__title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.detail-section__text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+.detail-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+}
+
+.detail-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.detail-info-item--wide {
+  grid-column: span 2;
+}
+
+.detail-info-item__label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
+}
+
+.detail-info-item__value {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-normal);
+}
+
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.detail-tag {
+  display: inline-block;
+  padding: var(--space-1) var(--space-3);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.detail-sidebar {
+  position: sticky;
+  top: calc(var(--header-height) + var(--space-6));
+}
+
+.detail-action-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  margin-bottom: var(--space-4);
+  box-shadow: var(--shadow-sm);
+}
+
+.detail-action-card__label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--space-2);
+}
+
+.detail-action-card__amount {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin-bottom: var(--space-4);
+  line-height: 1;
+}
+
+.detail-action-card__reason {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  background: rgba(16, 185, 129, 0.05);
+  border-left: 3px solid var(--color-success);
+  padding: var(--space-3);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  line-height: var(--line-height-relaxed);
+}
+
+.detail-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.detail-btn-back {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+}
+
+.detail-btn-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===================================
+   制度詳細ページ レスポンシブ
+   =================================== */
+@media (max-width: 900px) {
+  .detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-sidebar {
+    position: static;
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .detail-hero {
+    padding: var(--space-6) var(--space-5) var(--space-5);
+  }
+
+  .detail-hero__title {
+    font-size: var(--font-size-xl);
+  }
+
+  .detail-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-info-item--wide {
+    grid-column: span 1;
+  }
+
+  .detail-section {
+    padding: var(--space-5) var(--space-4);
   }
 }
