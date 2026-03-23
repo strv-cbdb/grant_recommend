@@ -138,6 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
             r.closest('.chip')?.classList.remove('active');
           });
           this.classList.add('active');
+          input.dispatchEvent(new Event('change'));
           updateProgress();
           triggerInputAnimation(input);
         }
