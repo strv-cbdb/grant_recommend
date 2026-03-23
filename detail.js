@@ -125,7 +125,7 @@ function renderDetail(subsidy) {
   container.innerHTML = `
     <!-- 戻るボタン -->
     <div class="detail-back">
-      <a href="recommend.html" class="btn-ghost btn-small">← 診断結果に戻る</a>
+      <a href="index.html" class="btn-ghost btn-small">← 診断結果に戻る</a>
     </div>
 
     <!-- ヒーロー -->
@@ -206,7 +206,7 @@ function renderDetail(subsidy) {
             ? `<a href="${subsidy.official_url}" class="btn-primary btn-primary--full" target="_blank" rel="noopener">公式サイトで確認する →</a>`
             : `<a href="#" class="btn-primary btn-primary--full">公式サイトを確認する</a>`
           }
-          <a href="recommend.html" class="btn-outline detail-btn-back">← 診断結果に戻る</a>
+          <a href="index.html" class="btn-outline detail-btn-back">← 診断結果に戻る</a>
         </div>
 
       </aside>
@@ -223,7 +223,7 @@ async function init() {
   const id = getIdFromURL();
 
   if (!id) {
-    window.location.href = 'recommend.html';
+    window.location.href = 'index.html';
     return;
   }
 
@@ -236,7 +236,7 @@ async function init() {
         <div class="empty-state__icon">⚠️</div>
         <div class="empty-state__title">制度情報が見つかりませんでした</div>
         <div class="empty-state__text">
-          <a href="recommend.html" style="color: var(--color-secondary); text-decoration: underline;">診断結果に戻る</a>
+          <a href="index.html" style="color: var(--color-secondary); text-decoration: underline;">診断結果に戻る</a>
         </div>
       </div>
     `;

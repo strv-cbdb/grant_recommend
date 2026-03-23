@@ -2405,12 +2405,14 @@ select:focus {
   }
 
   .filter-bar__search input {
-    height: 38px;
+    height: 34px;
     background: var(--color-background);
     border-color: transparent;
     border-radius: var(--radius-lg);
-    font-size: 16px; /* iOSズーム防止: 16px未満にするとiOS Safariでタップ時ズームが発生 */
-    padding-left: 40px;
+    font-size: 12px;
+    padding-left: 36px;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   .filter-bar__search input:focus {
@@ -2419,11 +2421,11 @@ select:focus {
   }
 
   .filter-bar__select select {
-    height: 38px;
+    height: 34px;
     background-color: var(--color-background);
     border-color: transparent;
     border-radius: var(--radius-lg);
-    font-size: 16px; /* iOSズーム防止: 16px未満にするとiOS Safariでタップ時ズームが発生 */
+    font-size: 12px;
     padding-top: 0;
     padding-bottom: 0;
   }
