@@ -372,6 +372,10 @@
                       <label class="relocation-sub-label">移住を検討している地域はありますか？</label>
                       <div class="chip-group chip-group--radio">
                         <label class="chip">
+                          <input type="radio" name="relocationRegion" value="hokkaido" />
+                          北海道
+                        </label>
+                        <label class="chip">
                           <input type="radio" name="relocationRegion" value="tohoku" />
                           東北
                         </label>
@@ -380,12 +384,32 @@
                           関東
                         </label>
                         <label class="chip">
+                          <input type="radio" name="relocationRegion" value="chubu" />
+                          中部
+                        </label>
+                        <label class="chip">
+                          <input type="radio" name="relocationRegion" value="kinki" />
+                          近畿
+                        </label>
+                        <label class="chip">
+                          <input type="radio" name="relocationRegion" value="chugoku" />
+                          中国
+                        </label>
+                        <label class="chip">
+                          <input type="radio" name="relocationRegion" value="shikoku" />
+                          四国
+                        </label>
+                        <label class="chip">
+                          <input type="radio" name="relocationRegion" value="kyushu" />
+                          九州・沖縄
+                        </label>
+                        <label class="chip">
                           <input type="radio" name="relocationRegion" value="undecided" />
                           まだ決まっていない
                         </label>
                       </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="relocationOpenToOtherGroup" style="display: none;">
                       <label class="relocation-sub-label">条件に合う支援制度が充実している地域も知りたいですか？</label>
                       <div class="chip-group chip-group--radio">
                         <label class="chip">

@@ -93,7 +93,9 @@ document.addEventListener('DOMContentLoaded', function () {
         regionRadio.closest('.chip')?.classList.add('active');
       }
     }
-    if (DEMO_PROFILE.relocationOpenToOther) {
+    if (DEMO_PROFILE.relocationRegion === 'undecided' && DEMO_PROFILE.relocationOpenToOther) {
+      const group = document.getElementById('relocationOpenToOtherGroup');
+      if (group) group.style.display = 'block';
       const otherRadio = document.querySelector(`input[name="relocationOpenToOther"][value="${DEMO_PROFILE.relocationOpenToOther}"]`);
       if (otherRadio) {
         otherRadio.checked = true;
@@ -381,6 +383,15 @@ document.addEventListener('DOMContentLoaded', function () {
   // ===================================
   // 移住サブ質問の表示制御
   // ===================================
+  function resetRelocationOpenToOther() {
+    const group = document.getElementById('relocationOpenToOtherGroup');
+    if (group) group.style.display = 'none';
+    document.querySelectorAll('input[name="relocationOpenToOther"]').forEach(r => {
+      r.checked = false;
+      r.closest('.chip')?.classList.remove('active');
+    });
+  }
+
   function setupRelocationToggle() {
     const relocationCheckbox = document.getElementById('relocation');
     const subSection = document.getElementById('relocationSubQuestions');
@@ -396,11 +407,21 @@ document.addEventListener('DOMContentLoaded', function () {
           r.checked = false;
           r.closest('.chip')?.classList.remove('active');
         });
-        document.querySelectorAll('input[name="relocationOpenToOther"]').forEach(r => {
-          r.checked = false;
-          r.closest('.chip')?.classList.remove('active');
-        });
+        resetRelocationOpenToOther();
       }
+    });
+
+    // 地域チップ選択時：「まだ決まっていない」のみ2つ目のサブ質問を表示
+    document.querySelectorAll('input[name="relocationRegion"]').forEach(radio => {
+      radio.addEventListener('change', function () {
+        const group = document.getElementById('relocationOpenToOtherGroup');
+        if (!group) return;
+        if (this.value === 'undecided') {
+          group.style.display = 'block';
+        } else {
+          resetRelocationOpenToOther();
+        }
+      });
     });
   }
 
