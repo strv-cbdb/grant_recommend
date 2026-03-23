@@ -226,6 +226,11 @@ function renderSubsidyCard(subsidy, score) {
     return `<span class="badge ${colorCls}">${cat.trim()}</span>`;
   }).join('');
 
+  // AIバッジ（スコア70以上）
+  const aiBadge = score >= 70
+    ? `<span class="ai-badge">✦ AIおすすめ</span>`
+    : '';
+
   // 難易度インジケーター
   const difficultyMap = { low: 1, medium: 2, high: 3 };
   const difficultyLevel = difficultyMap[subsidy.difficulty] || 1;
