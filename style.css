@@ -2459,11 +2459,14 @@ select:focus {
 
   /* iOS Segmented Control風のピル型タブに変更（下線廃止） */
   .tab-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
     background: var(--color-background);
     border-radius: var(--radius-xl);
-    padding: var(--space-1);
+    padding: 4px;
     border-bottom: none;
-    gap: var(--space-1);
+    gap: 4px;
     margin-bottom: var(--space-4);
     overflow-x: auto;
     scrollbar-width: none;
@@ -2475,46 +2478,57 @@ select:focus {
   }
 
   .tab-btn {
-    flex: 1;
-    display: inline-flex;
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1 1 0;
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--space-1);
+    gap: 4px;
     border-radius: var(--radius-lg);
     border: none;
-    margin-bottom: 0;
-    padding: 0 var(--space-3);
-    font-size: 0.75rem;
+    outline: none;
+    margin: 0;
+    padding: 0 10px;
+    font-size: 0.72rem;
+    font-weight: var(--font-weight-medium);
     line-height: 1;
     color: var(--color-text-secondary);
-    min-width: 80px;
-    height: 36px;
+    background: transparent;
+    box-shadow: none;
+    min-width: 0;
+    height: 34px;
     box-sizing: border-box;
     white-space: nowrap;
+    cursor: pointer;
   }
 
   .tab-count {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     min-width: 16px;
     height: 16px;
     padding: 0 3px;
     font-size: 10px;
     line-height: 1;
-    flex-shrink: 0;
+    border-radius: 999px;
+    background: var(--color-border);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-semibold);
   }
 
   /* アクティブタブ: 白背景 + 影でリフトアップ */
   .tab-btn.active {
     background: var(--color-surface);
     color: var(--color-text-primary);
-    box-shadow: var(--shadow-sm);
     font-weight: var(--font-weight-semibold);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
   }
 
   .tab-btn.active .tab-count {
-    background: rgba(37, 99, 235, 0.08);
+    background: rgba(37, 99, 235, 0.1);
     color: var(--color-secondary);
   }
 
