@@ -2544,7 +2544,6 @@ select:focus {
 
   /* ページ全体のパディングもヘッダー高さに合わせる */
   .page-wrapper {
-    padding-top: calc(56px + env(safe-area-inset-top, 0px));
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
