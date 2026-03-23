@@ -93,9 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
         regionRadio.closest('.chip')?.classList.add('active');
       }
     }
-    if (DEMO_PROFILE.relocationRegion === 'undecided' && DEMO_PROFILE.relocationOpenToOther) {
-      const group = document.getElementById('relocationOpenToOtherGroup');
-      if (group) group.style.display = 'block';
+    if (DEMO_PROFILE.relocationOpenToOther) {
       const otherRadio = document.querySelector(`input[name="relocationOpenToOther"][value="${DEMO_PROFILE.relocationOpenToOther}"]`);
       if (otherRadio) {
         otherRadio.checked = true;
@@ -399,8 +397,10 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!relocationCheckbox || !subSection) return;
 
     relocationCheckbox.addEventListener('change', function () {
+      const openToOtherGroup = document.getElementById('relocationOpenToOtherGroup');
       if (this.checked) {
         subSection.style.display = 'block';
+        if (openToOtherGroup) openToOtherGroup.style.display = 'block';
       } else {
         subSection.style.display = 'none';
         // 非表示時はサブ質問の選択をリセット
@@ -410,19 +410,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         resetRelocationOpenToOther();
       }
-    });
-
-    // 地域チップ選択時：「まだ決まっていない」のみ2つ目のサブ質問を表示
-    document.querySelectorAll('input[name="relocationRegion"]').forEach(radio => {
-      radio.addEventListener('change', function () {
-        const group = document.getElementById('relocationOpenToOtherGroup');
-        if (!group) return;
-        if (this.value === 'undecided') {
-          group.style.display = 'block';
-        } else {
-          resetRelocationOpenToOther();
-        }
-      });
     });
   }
 
