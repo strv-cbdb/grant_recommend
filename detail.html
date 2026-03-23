@@ -9,24 +9,9 @@
 </head>
 <body>
 
-  <!-- ヘッダー -->
-  <header class="header">
-    <div class="header__inner">
-      <a href="index.html" class="header__logo">
-        <span class="header__logo-text">BenefitAI</span>
-        <span class="header__logo-tagline">補助金・支援制度 AIレコメンド</span>
-      </a>
-      <nav class="header__nav">
-        <a href="recommend.html" class="header__back">
-          ← 診断結果に戻る
-        </a>
-      </nav>
-    </div>
-  </header>
-
   <!-- ページ本体 -->
   <main class="page-wrapper">
-    <div class="container" style="padding-top: var(--space-8); padding-bottom: var(--space-16);">
+    <div class="container" style="padding-top: var(--space-5); padding-bottom: calc(var(--footer-nav-height) + var(--space-6));">
 
       <!-- ローディング -->
       <div id="detailLoading" class="detail-loading">
@@ -39,6 +24,22 @@
 
     </div>
   </main>
+
+  <!-- フッターナビ -->
+  <nav class="footer-nav" aria-label="メインナビゲーション">
+    <a href="account.html" class="footer-nav__item">
+      <img src="icon/human.svg" class="footer-nav__icon" alt="">
+      <span class="footer-nav__label">アカウント</span>
+    </a>
+    <a href="recommend.html" class="footer-nav__item active">
+      <img src="icon/search.svg" class="footer-nav__icon" alt="">
+      <span class="footer-nav__label">探す</span>
+    </a>
+    <a href="notice.html" class="footer-nav__item">
+      <img src="icon/notice.svg" class="footer-nav__icon" alt="">
+      <span class="footer-nav__label">通知</span>
+    </a>
+  </nav>
 
   <script src="detail.js"></script>
 </body>

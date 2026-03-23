@@ -226,11 +226,6 @@ function renderSubsidyCard(subsidy, score) {
     return `<span class="badge ${colorCls}">${cat.trim()}</span>`;
   }).join('');
 
-  // AIバッジ（スコア70以上）
-  const aiBadge = score >= 70
-    ? `<span class="ai-badge">✦ AIおすすめ</span>`
-    : '';
-
   // 難易度インジケーター
   const difficultyMap = { low: 1, medium: 2, high: 3 };
   const difficultyLevel = difficultyMap[subsidy.difficulty] || 1;
@@ -268,7 +263,7 @@ function renderSubsidyCard(subsidy, score) {
 
   // 通知状態
   const isNotified = notifications[subsidy.id] || false;
-  const bellIcon = isNotified ? '🔔' : '🔕';
+  const bellIcon = isNotified ? '&#x1F514;' : '&#x1F515;';
   const bellLabel = isNotified ? '通知設定済み' : '通知を受け取る';
   const bellActiveCls = isNotified ? 'active' : '';
 
@@ -304,7 +299,6 @@ function renderSubsidyCard(subsidy, score) {
 
         <div class="card-meta">
           <div class="card-meta__item">
-            <span>📍</span>
             <span>${regionLabel}</span>
           </div>
           <div class="card-difficulty">
@@ -368,7 +362,7 @@ function renderRelocationCard(subsidy) {
 
   // 通知状態
   const isNotified = notifications[subsidy.id] || false;
-  const bellIcon = isNotified ? '🔔' : '🔕';
+  const bellIcon = isNotified ? '&#x1F514;' : '&#x1F515;';
   const bellActiveCls = isNotified ? 'active' : '';
 
   return `
@@ -378,7 +372,7 @@ function renderRelocationCard(subsidy) {
           <span class="badge ${regionBadgeCls}">${regionGroup || '全国'}</span>
           <span class="relocation-card__municipality">${regionLabel}</span>
         </div>
-        <span class="relocation-badge">🗾 移住支援</span>
+        <span class="relocation-badge">移住支援</span>
       </div>
 
       <div class="card-header">
@@ -386,7 +380,7 @@ function renderRelocationCard(subsidy) {
           <div class="card-header__name">${subsidy.subsidy_name}</div>
           <div class="card-header__badges">
             <span class="badge badge--green">移住</span>
-            <span class="ai-badge">✦ AIおすすめ</span>
+            <span class="ai-badge">AIおすすめ</span>
           </div>
         </div>
       </div>
@@ -401,7 +395,7 @@ function renderRelocationCard(subsidy) {
 
         ${reason ? `
         <div class="relocation-reason">
-          <span class="relocation-reason__icon">🏡</span>
+          <span class="relocation-reason__icon"></span>
           <span class="relocation-reason__text">${reason}</span>
         </div>` : ''}
 
@@ -587,7 +581,6 @@ function renderTabContent(tab) {
     if (subsidies.length === 0) {
       container.innerHTML = `
         <div class="empty-state">
-          <div class="empty-state__icon">🗾</div>
           <div class="empty-state__title">移住向け制度が見つかりませんでした</div>
           <div class="empty-state__text">条件を変えて再度お試しください</div>
         </div>
@@ -606,7 +599,6 @@ function renderTabContent(tab) {
   if (subsidies.length === 0) {
     container.innerHTML = `
       <div class="empty-state">
-        <div class="empty-state__icon">🔍</div>
         <div class="empty-state__title">該当する制度が見つかりませんでした</div>
         <div class="empty-state__text">条件を変えて再度お試しください</div>
       </div>
@@ -713,7 +705,7 @@ function renderProfileSummary() {
   container.innerHTML = `
     <span class="profile-summary__label">あなたのプロフィール</span>
     <div class="profile-summary__tags">${tagsHTML}</div>
-    <a href="index.html" class="btn-ghost btn-small" style="margin-left: auto;">
+    <a href="account.html" class="btn-ghost btn-small" style="margin-left: auto;">
       ✏️ 編集
     </a>
   `;
@@ -725,7 +717,7 @@ function renderProfileSummary() {
 window.toggleNotification = function (subsidyId, btn) {
   notifications[subsidyId] = !notifications[subsidyId];
   const isOn = notifications[subsidyId];
-  btn.textContent = isOn ? '🔔' : '🔕';
+  btn.innerHTML = isOn ? '&#x1F514;' : '&#x1F515;';
   btn.classList.toggle('active', isOn);
   btn.title = isOn ? '通知設定済み' : '通知を受け取る';
   try {
@@ -892,7 +884,6 @@ async function init() {
     hideLoading();
     document.getElementById('tabRecommend').innerHTML = `
       <div class="empty-state">
-        <div class="empty-state__icon">⚠️</div>
         <div class="empty-state__title">データの読み込みに失敗しました</div>
         <div class="empty-state__text">ページを再読み込みしてください</div>
       </div>

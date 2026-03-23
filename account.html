@@ -9,27 +9,13 @@
 </head>
 <body>
 
-  <!-- ヘッダー -->
-  <header class="header">
-    <div class="header__inner">
-      <a href="index.html" class="header__logo">
-        <span class="header__logo-text">BenefitAI</span>
-        <span class="header__logo-tagline">補助金・支援制度 AIレコメンド</span>
-      </a>
-      <nav class="header__nav">
-        <a href="#">ヘルプ</a>
-        <a href="index.html" class="btn-nav-primary">結果を見る</a>
-      </nav>
-    </div>
-  </header>
-
   <!-- ページ本体 -->
   <main class="page-wrapper">
 
     <!-- メインコンテンツ -->
-    <div class="container">
+    <div class="container" style="padding-top: var(--space-6); padding-bottom: calc(var(--footer-nav-height) + var(--space-6));">
       <div class="form-card">
-        <h2 class="form-card__title">あなたの情報を入力してください</h2>
+        <h2 class="form-card__title">アカウント設定</h2>
 
         <form id="profileForm" novalidate>
 
@@ -392,23 +378,43 @@
               <div class="chip-group chip-group--checkbox">
                 <label class="chip">
                   <input type="checkbox" name="priorities" value="immediate" />
-                  ⚡ すぐもらえる
+                  すぐもらえる
                 </label>
                 <label class="chip">
                   <input type="checkbox" name="priorities" value="large_amount" />
-                  💰 金額が大きい
+                  金額が大きい
                 </label>
                 <label class="chip">
                   <input type="checkbox" name="priorities" value="easy" />
-                  ✅ 手続きが簡単
+                  手続きが簡単
                 </label>
                 <label class="chip">
                   <input type="checkbox" name="priorities" value="future_use" />
-                  📅 将来使える
+                  将来使える
                 </label>
                 <label class="chip">
                   <input type="checkbox" name="priorities" value="post_move" />
-                  🗾 引越し後に使える
+                  引越し後に使える
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <div class="section-divider"></div>
+
+          <!-- Section 8: 通知設定 -->
+          <section class="form-section">
+            <h3 class="form-section__title">通知設定</h3>
+
+            <div class="form-group">
+              <div class="toggle-wrapper">
+                <label class="toggle-label" for="globalNotificationToggle">
+                  新しい制度が追加されたら通知を受け取る
+                  <span class="toggle-label__sub">あなたのプロフィールに合う制度が追加されたときにお知らせします</span>
+                </label>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="globalNotificationToggle" />
+                  <span class="toggle-slider"></span>
                 </label>
               </div>
             </div>
@@ -422,7 +428,7 @@
               class="btn-primary btn-primary--full btn-primary--large"
             >
               <span id="submitBtnSpinner" style="display:none; width:20px; height:20px; border:3px solid rgba(255,255,255,0.4); border-top-color:white; border-radius:50%; animation: spin 0.8s linear infinite;"></span>
-              <span id="submitBtnText">おすすめ制度を診断する →</span>
+              <span id="submitBtnText">保存して制度を探す</span>
             </button>
           </div>
 
@@ -432,6 +438,22 @@
     <!-- /container -->
 
   </main>
+
+  <!-- フッターナビ -->
+  <nav class="footer-nav" aria-label="メインナビゲーション">
+    <a href="account.html" class="footer-nav__item active">
+      <img src="icon/human.svg" class="footer-nav__icon" alt="">
+      <span class="footer-nav__label">アカウント</span>
+    </a>
+    <a href="recommend.html" class="footer-nav__item">
+      <img src="icon/search.svg" class="footer-nav__icon" alt="">
+      <span class="footer-nav__label">探す</span>
+    </a>
+    <a href="notice.html" class="footer-nav__item">
+      <img src="icon/notice.svg" class="footer-nav__icon" alt="">
+      <span class="footer-nav__label">通知</span>
+    </a>
+  </nav>
 
   <script src="app.js"></script>
 </body>

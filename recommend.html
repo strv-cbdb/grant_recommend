@@ -16,56 +16,17 @@
     <div class="loading-overlay__text">AIが最適な制度を分析中...</div>
   </div>
 
-  <!-- ヘッダー -->
-  <header class="header">
-    <div class="header__inner">
-      <a href="index.html" class="header__logo">
-        <span class="header__logo-text">BenefitAI</span>
-        <span class="header__logo-tagline">補助金・支援制度 AIレコメンド</span>
-      </a>
-      <nav class="header__nav">
-        <a href="index.html" class="header__back">
-          ← 入力に戻る
-        </a>
-      </nav>
-    </div>
-  </header>
-
   <!-- ページ本体 -->
   <main class="page-wrapper">
-    <div class="container" style="padding-top: var(--space-8); padding-bottom: var(--space-16);">
-
-      <!-- 通知バナー -->
-      <div id="notificationBanner" class="notification-banner">
-        <span class="notification-banner__icon">🔔</span>
-        <span class="notification-banner__text">
-          新しい制度が追加されたときに通知を受け取りますか？
-          あなたに関係する制度の情報をお届けします。
-        </span>
-        <label class="toggle-switch" style="flex-shrink:0;">
-          <input type="checkbox" id="globalNotificationToggle" />
-          <span class="toggle-slider"></span>
-        </label>
-        <span id="notificationSetBadge" class="badge badge--green" style="display:none; flex-shrink:0;">設定済み</span>
-        <button
-          id="notificationBannerClose"
-          class="notification-banner__close"
-          aria-label="バナーを閉じる"
-          title="閉じる"
-        >✕</button>
-      </div>
-
-      <!-- プロフィールサマリー -->
-      <div id="profileSummary" class="profile-summary">
-        <!-- recommend.js により動的生成 -->
-        <span class="profile-summary__label">読み込み中...</span>
-      </div>
+    <div class="container" style="padding-top: var(--space-5); padding-bottom: var(--space-16);">
 
       <!-- フィルターバー -->
       <div class="filter-bar">
         <!-- 検索 -->
         <div class="filter-bar__search">
-          <span class="filter-bar__search-icon">🔍</span>
+          <span class="filter-bar__search-icon">
+            <img src="icon/search.svg" alt="" style="width:16px;height:16px;opacity:0.45;vertical-align:middle;">
+          </span>
           <input
             type="text"
             id="searchInput"
@@ -89,13 +50,13 @@
       <!-- カテゴリフィルターチップ -->
       <div class="filter-chips" id="categoryFilter" style="margin-bottom: var(--space-5);">
         <button class="filter-chip active" data-category="全て">全て</button>
-        <button class="filter-chip" data-category="子育て">👶 子育て</button>
-        <button class="filter-chip" data-category="住宅">🏠 住宅</button>
-        <button class="filter-chip" data-category="移住">🗾 移住</button>
-        <button class="filter-chip" data-category="起業">🚀 起業</button>
-        <button class="filter-chip" data-category="就業">💼 就業</button>
-        <button class="filter-chip" data-category="介護">🏥 介護</button>
-        <button class="filter-chip" data-category="生活支援">💴 生活支援</button>
+        <button class="filter-chip" data-category="子育て">子育て</button>
+        <button class="filter-chip" data-category="住宅">住宅</button>
+        <button class="filter-chip" data-category="移住">移住</button>
+        <button class="filter-chip" data-category="起業">起業</button>
+        <button class="filter-chip" data-category="就業">就業</button>
+        <button class="filter-chip" data-category="介護">介護</button>
+        <button class="filter-chip" data-category="生活支援">生活支援</button>
       </div>
 
       <!-- タブナビゲーション -->
@@ -107,7 +68,7 @@
           aria-selected="true"
           aria-controls="tabRecommend"
         >
-          ✦ あなたにおすすめ
+          あなたにおすすめ
           <span class="tab-count" id="tabCountRecommend">0</span>
         </button>
         <button
@@ -117,7 +78,7 @@
           aria-selected="false"
           aria-controls="tabNow"
         >
-          ⚡ すぐ受け取れそう
+          すぐ受け取れそう
           <span class="tab-count" id="tabCountNow">0</span>
         </button>
         <button
@@ -127,7 +88,7 @@
           aria-selected="false"
           aria-controls="tabFuture"
         >
-          📅 将来・条件次第
+          将来・条件次第
           <span class="tab-count" id="tabCountFuture">0</span>
         </button>
         <!-- 移住するならタブ（relocation=true の場合のみ表示） -->
@@ -140,7 +101,7 @@
           id="tabBtnRelocation"
           style="display: none;"
         >
-          🗾 移住するなら
+          移住するなら
           <span class="tab-count" id="tabCountRelocation">0</span>
         </button>
       </nav>
@@ -223,17 +184,32 @@
 
       <!-- 空の状態テンプレート（非表示） -->
       <div id="emptyState" class="empty-state" style="display: none;" aria-hidden="true">
-        <div class="empty-state__icon">🔍</div>
         <div class="empty-state__title">該当する制度が見つかりませんでした</div>
         <div class="empty-state__text">
           検索条件やフィルターを変更してお試しください。<br>
-          または<a href="index.html" style="color: var(--color-secondary); text-decoration: underline;">入力情報を変更</a>することでより多くの制度が表示される場合があります。
+          または<a href="account.html" style="color: var(--color-secondary); text-decoration: underline;">入力情報を変更</a>することでより多くの制度が表示される場合があります。
         </div>
       </div>
 
     </div>
     <!-- /container -->
   </main>
+
+  <!-- フッターナビ -->
+  <nav class="footer-nav" aria-label="メインナビゲーション">
+    <a href="account.html" class="footer-nav__item">
+      <img src="icon/human.svg" class="footer-nav__icon" alt="">
+      <span class="footer-nav__label">アカウント</span>
+    </a>
+    <a href="recommend.html" class="footer-nav__item active">
+      <img src="icon/search.svg" class="footer-nav__icon" alt="">
+      <span class="footer-nav__label">探す</span>
+    </a>
+    <a href="notice.html" class="footer-nav__item">
+      <img src="icon/notice.svg" class="footer-nav__icon" alt="">
+      <span class="footer-nav__label">通知</span>
+    </a>
+  </nav>
 
   <script src="recommend.js"></script>
 </body>
