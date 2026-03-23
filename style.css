@@ -2461,14 +2461,16 @@ select:focus {
   .tab-nav {
     display: flex;
     flex-direction: row;
-    align-items: stretch;
+    flex-wrap: nowrap;
+    align-items: center;
     background: var(--color-background);
     border-radius: var(--radius-xl);
-    padding: 4px;
+    padding: 4px 8px;
     border-bottom: none;
     gap: 4px;
     margin-bottom: var(--space-4);
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
@@ -2480,8 +2482,8 @@ select:focus {
   .tab-btn {
     -webkit-appearance: none;
     appearance: none;
-    flex: 1 1 0;
-    display: flex;
+    flex: 0 0 auto;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 4px;
@@ -2489,17 +2491,17 @@ select:focus {
     border: none;
     outline: none;
     margin: 0;
-    padding: 0 10px;
+    padding: 0 12px;
     font-size: 0.72rem;
     font-weight: var(--font-weight-medium);
     line-height: 1;
     color: var(--color-text-secondary);
     background: transparent;
     box-shadow: none;
-    min-width: 0;
     height: 34px;
     box-sizing: border-box;
     white-space: nowrap;
+    flex-shrink: 0;
     cursor: pointer;
   }
 
