@@ -3,11 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="あなたに最適な補助金・支援制度をAIが診断します。年齢・家族構成・ライフスタイルに合わせた制度をご提案。" />
-  <title>補助金・支援制度レコメンド | BenefitAI</title>
+  <meta name="description" content="あなたのプロフィールに基づいた補助金・支援制度のおすすめ診断結果です。" />
+  <title>診断結果 - あなたへのおすすめ制度 | BenefitAI</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <!-- ローディングオーバーレイ -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="loading-overlay__logo">BenefitAI</div>
+    <div class="loading-spinner"></div>
+    <div class="loading-overlay__text">AIが最適な制度を分析中...</div>
+  </div>
 
   <!-- ヘッダー -->
   <header class="header">
@@ -18,504 +25,215 @@
       </a>
       <nav class="header__nav">
         <a href="#">ヘルプ</a>
-        <a href="#" class="btn-nav-primary">ログイン</a>
+        <a href="account.html" class="btn-nav-primary">設定</a>
       </nav>
     </div>
   </header>
 
   <!-- ページ本体 -->
   <main class="page-wrapper">
+    <div class="container" style="padding-top: var(--space-8); padding-bottom: var(--space-16);">
 
-    <!-- ヒーローセクション -->
-    <section class="hero">
-      <div class="hero__inner">
-        <div class="hero__badge">✦ AIパーソナライズ レコメンド</div>
-        <h1 class="hero__title">あなたに最適な補助金・支援制度を、<br>AIが診断します</h1>
-        <p class="hero__subtitle">
-          年齢・家族構成・ライフスタイルに合わせて、今すぐ使える制度から将来の備えまで、<br>
-          最適な支援制度をご提案します。
-        </p>
-        <div class="hero__stats">
-          <div class="hero__stat">
-            <span class="hero__stat-value">2,000件以上</span>
-            <span class="hero__stat-label">の制度を網羅</span>
+      <!-- 通知バナー -->
+      <div id="notificationBanner" class="notification-banner">
+        <span class="notification-banner__icon">🔔</span>
+        <span class="notification-banner__text">
+          新しい制度が追加されたときに通知を受け取りますか？
+          あなたに関係する制度の情報をお届けします。
+        </span>
+        <label class="toggle-switch" style="flex-shrink:0;">
+          <input type="checkbox" id="globalNotificationToggle" />
+          <span class="toggle-slider"></span>
+        </label>
+        <span id="notificationSetBadge" class="badge badge--green" style="display:none; flex-shrink:0;">設定済み</span>
+        <button
+          id="notificationBannerClose"
+          class="notification-banner__close"
+          aria-label="バナーを閉じる"
+          title="閉じる"
+        >✕</button>
+      </div>
+
+      <!-- プロフィールサマリー -->
+      <div id="profileSummary" class="profile-summary">
+        <!-- recommend.js により動的生成 -->
+        <span class="profile-summary__label">読み込み中...</span>
+      </div>
+
+      <!-- フィルターバー -->
+      <div class="filter-bar">
+        <!-- 検索 -->
+        <div class="filter-bar__search">
+          <span class="filter-bar__search-icon">🔍</span>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="制度名・キーワードで検索"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="filter-bar__divider"></div>
+
+        <!-- ソート -->
+        <div class="filter-bar__select">
+          <select id="sortSelect" aria-label="並び替え">
+            <option value="score">おすすめ順</option>
+            <option value="amount">金額が多い順</option>
+            <option value="difficulty">申請しやすい順</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- カテゴリフィルターチップ -->
+      <div class="filter-chips" id="categoryFilter" style="margin-bottom: var(--space-5);">
+        <button class="filter-chip active" data-category="全て">全て</button>
+        <button class="filter-chip" data-category="子育て">👶 子育て</button>
+        <button class="filter-chip" data-category="住宅">🏠 住宅</button>
+        <button class="filter-chip" data-category="移住">🗾 移住</button>
+        <button class="filter-chip" data-category="起業">🚀 起業</button>
+        <button class="filter-chip" data-category="就業">💼 就業</button>
+        <button class="filter-chip" data-category="介護">🏥 介護</button>
+        <button class="filter-chip" data-category="生活支援">💴 生活支援</button>
+      </div>
+
+      <!-- タブナビゲーション -->
+      <nav class="tab-nav" role="tablist">
+        <button
+          class="tab-btn active"
+          data-tab="recommend"
+          role="tab"
+          aria-selected="true"
+          aria-controls="tabRecommend"
+        >
+          ✦ あなたにおすすめ
+          <span class="tab-count" id="tabCountRecommend">0</span>
+        </button>
+        <button
+          class="tab-btn"
+          data-tab="now"
+          role="tab"
+          aria-selected="false"
+          aria-controls="tabNow"
+        >
+          ⚡ すぐ受け取れそう
+          <span class="tab-count" id="tabCountNow">0</span>
+        </button>
+        <button
+          class="tab-btn"
+          data-tab="future"
+          role="tab"
+          aria-selected="false"
+          aria-controls="tabFuture"
+        >
+          📅 将来・条件次第
+          <span class="tab-count" id="tabCountFuture">0</span>
+        </button>
+        <!-- 移住するならタブ（relocation=true の場合のみ表示） -->
+        <button
+          class="tab-btn"
+          data-tab="relocation"
+          role="tab"
+          aria-selected="false"
+          aria-controls="tabRelocation"
+          id="tabBtnRelocation"
+          style="display: none;"
+        >
+          🗾 移住するなら
+          <span class="tab-count" id="tabCountRelocation">0</span>
+        </button>
+      </nav>
+
+      <!-- タブコンテンツ：おすすめ -->
+      <div
+        id="tabRecommend"
+        class="tab-content"
+        role="tabpanel"
+        aria-labelledby="tab-recommend"
+        style="display: block;"
+      >
+        <!-- スケルトン（初期表示） -->
+        <div class="cards-list" id="skeletonRecommend">
+          <div class="skeleton-card">
+            <div class="skeleton skeleton-line skeleton-line--medium" style="margin-bottom: 8px; height: 20px;"></div>
+            <div style="display:flex; gap: 8px; margin-bottom: 12px;">
+              <div class="skeleton skeleton-line" style="width: 60px; height: 20px;"></div>
+              <div class="skeleton skeleton-line" style="width: 80px; height: 20px;"></div>
+            </div>
+            <div class="skeleton skeleton-block" style="margin-bottom: 12px;"></div>
+            <div class="skeleton skeleton-line skeleton-line--full" style="margin-bottom: 6px; height: 14px;"></div>
+            <div class="skeleton skeleton-line skeleton-line--medium" style="height: 14px;"></div>
           </div>
-          <div class="hero__stat">
-            <span class="hero__stat-value">平均 8.3件</span>
-            <span class="hero__stat-label">のマッチ数</span>
+          <div class="skeleton-card">
+            <div class="skeleton skeleton-line skeleton-line--medium" style="margin-bottom: 8px; height: 20px;"></div>
+            <div style="display:flex; gap: 8px; margin-bottom: 12px;">
+              <div class="skeleton skeleton-line" style="width: 70px; height: 20px;"></div>
+              <div class="skeleton skeleton-line" style="width: 90px; height: 20px;"></div>
+            </div>
+            <div class="skeleton skeleton-block" style="margin-bottom: 12px;"></div>
+            <div class="skeleton skeleton-line skeleton-line--full" style="margin-bottom: 6px; height: 14px;"></div>
+            <div class="skeleton skeleton-line" style="width: 60%; height: 14px;"></div>
           </div>
-          <div class="hero__stat">
-            <span class="hero__stat-value">94%</span>
-            <span class="hero__stat-label">申請成功率</span>
+          <div class="skeleton-card">
+            <div class="skeleton skeleton-line skeleton-line--medium" style="margin-bottom: 8px; height: 20px;"></div>
+            <div style="display:flex; gap: 8px; margin-bottom: 12px;">
+              <div class="skeleton skeleton-line" style="width: 65px; height: 20px;"></div>
+              <div class="skeleton skeleton-line" style="width: 75px; height: 20px;"></div>
+            </div>
+            <div class="skeleton skeleton-block" style="margin-bottom: 12px;"></div>
+            <div class="skeleton skeleton-line skeleton-line--full" style="margin-bottom: 6px; height: 14px;"></div>
+            <div class="skeleton skeleton-line skeleton-line--short" style="height: 14px;"></div>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- メインコンテンツ -->
-    <div class="container">
-      <div class="main-layout">
-
-        <!-- 左カラム：価値提案 -->
-        <aside class="main-layout__sidebar">
-          <div class="value-card">
-            <div class="value-card__icon value-card__icon--blue">🤖</div>
-            <div class="value-card__content">
-              <div class="value-card__title">AIがあなたに合わせた制度を厳選</div>
-              <div class="value-card__desc">プロフィールを分析し、最もマッチする制度をスコアリングして提示します。</div>
-            </div>
-          </div>
-          <div class="value-card">
-            <div class="value-card__icon value-card__icon--green">⚡</div>
-            <div class="value-card__content">
-              <div class="value-card__title">今すぐ申請できる制度が分かる</div>
-              <div class="value-card__desc">申請のしやすさで、すぐに動ける制度を優先表示します。</div>
-            </div>
-          </div>
-          <div class="value-card">
-            <div class="value-card__icon value-card__icon--orange">📅</div>
-            <div class="value-card__content">
-              <div class="value-card__title">将来のライフイベントにも対応</div>
-              <div class="value-card__desc">出産・住宅購入・転職など将来の予定に備えた制度も提案します。</div>
-            </div>
-          </div>
-          <div class="value-card">
-            <div class="value-card__icon value-card__icon--cyan">🔗</div>
-            <div class="value-card__content">
-              <div class="value-card__title">申請先へワンクリックでアクセス</div>
-              <div class="value-card__desc">公式サイトへの直接リンクで、申請手続きをスムーズに開始できます。</div>
-            </div>
-          </div>
-
-          <!-- 入力完了度 -->
-          <div style="margin-top: var(--space-6); padding: var(--space-5); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); box-shadow: var(--shadow-sm);">
-            <div class="progress-bar-wrapper">
-              <div class="progress-bar-label">
-                <span>入力完了度</span>
-                <span id="progressPercent">0%</span>
-              </div>
-              <div class="progress-bar">
-                <div class="progress-bar__fill" id="progressFill" style="width: 0%;"></div>
-              </div>
-            </div>
-            <p style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top: var(--space-3);">
-              必須項目を入力するとより精度の高いレコメンドが受けられます
-            </p>
-          </div>
-        </aside>
-
-        <!-- 右カラム：入力フォーム -->
-        <div class="main-layout__content">
-          <div class="form-card">
-            <h2 class="form-card__title">あなたの情報を入力してください</h2>
-
-            <form id="profileForm" novalidate>
-
-              <!-- Section 1: 基本情報 -->
-              <section class="form-section">
-                <h3 class="form-section__title">基本情報</h3>
-
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label for="age">年齢 <span class="required">*</span></label>
-                    <input
-                      type="number"
-                      id="age"
-                      name="age"
-                      min="18"
-                      max="100"
-                      placeholder="例：35"
-                      autocomplete="off"
-                    />
-                    <span class="form-error" id="ageError">年齢を正しく入力してください</span>
-                  </div>
-
-                  <div class="form-group">
-                    <label>性別 <span class="required">*</span></label>
-                    <div class="chip-group chip-group--radio">
-                      <label class="chip">
-                        <input type="radio" name="gender" value="male" />
-                        男性
-                      </label>
-                      <label class="chip">
-                        <input type="radio" name="gender" value="female" />
-                        女性
-                      </label>
-                      <label class="chip">
-                        <input type="radio" name="gender" value="other" />
-                        その他
-                      </label>
-                      <label class="chip">
-                        <input type="radio" name="gender" value="noanswer" />
-                        回答しない
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <div class="section-divider"></div>
-
-              <!-- Section 2: 居住地 -->
-              <section class="form-section">
-                <h3 class="form-section__title">居住地</h3>
-
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label for="prefecture">都道府県 <span class="required">*</span></label>
-                    <select id="prefecture" name="prefecture">
-                      <option value="">都道府県を選択</option>
-                      <option value="北海道">北海道</option>
-                      <option value="青森県">青森県</option>
-                      <option value="岩手県">岩手県</option>
-                      <option value="宮城県">宮城県</option>
-                      <option value="秋田県">秋田県</option>
-                      <option value="山形県">山形県</option>
-                      <option value="福島県">福島県</option>
-                      <option value="茨城県">茨城県</option>
-                      <option value="栃木県">栃木県</option>
-                      <option value="群馬県">群馬県</option>
-                      <option value="埼玉県">埼玉県</option>
-                      <option value="千葉県">千葉県</option>
-                      <option value="東京都">東京都</option>
-                      <option value="神奈川県">神奈川県</option>
-                      <option value="新潟県">新潟県</option>
-                      <option value="富山県">富山県</option>
-                      <option value="石川県">石川県</option>
-                      <option value="福井県">福井県</option>
-                      <option value="山梨県">山梨県</option>
-                      <option value="長野県">長野県</option>
-                      <option value="岐阜県">岐阜県</option>
-                      <option value="静岡県">静岡県</option>
-                      <option value="愛知県">愛知県</option>
-                      <option value="三重県">三重県</option>
-                      <option value="滋賀県">滋賀県</option>
-                      <option value="京都府">京都府</option>
-                      <option value="大阪府">大阪府</option>
-                      <option value="兵庫県">兵庫県</option>
-                      <option value="奈良県">奈良県</option>
-                      <option value="和歌山県">和歌山県</option>
-                      <option value="鳥取県">鳥取県</option>
-                      <option value="島根県">島根県</option>
-                      <option value="岡山県">岡山県</option>
-                      <option value="広島県">広島県</option>
-                      <option value="山口県">山口県</option>
-                      <option value="徳島県">徳島県</option>
-                      <option value="香川県">香川県</option>
-                      <option value="愛媛県">愛媛県</option>
-                      <option value="高知県">高知県</option>
-                      <option value="福岡県">福岡県</option>
-                      <option value="佐賀県">佐賀県</option>
-                      <option value="長崎県">長崎県</option>
-                      <option value="熊本県">熊本県</option>
-                      <option value="大分県">大分県</option>
-                      <option value="宮崎県">宮崎県</option>
-                      <option value="鹿児島県">鹿児島県</option>
-                      <option value="沖縄県">沖縄県</option>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="city">市区町村</label>
-                    <input
-                      type="text"
-                      id="city"
-                      name="city"
-                      placeholder="例：大阪市北区"
-                      autocomplete="address-level2"
-                    />
-                  </div>
-                </div>
-              </section>
-
-              <div class="section-divider"></div>
-
-              <!-- Section 3: 世帯・家族構成 -->
-              <section class="form-section">
-                <h3 class="form-section__title">世帯・家族構成 <span class="required">*</span></h3>
-
-                <div class="form-group">
-                  <div class="chip-group chip-group--radio chip-group--household">
-                    <label class="chip">
-                      <input type="radio" name="household" value="single" />
-                      単身
-                    </label>
-                    <label class="chip">
-                      <input type="radio" name="household" value="couple" />
-                      夫婦（子どもなし）
-                    </label>
-                    <label class="chip">
-                      <input type="radio" name="household" value="child" />
-                      子どもあり
-                    </label>
-                    <label class="chip">
-                      <input type="radio" name="household" value="elderly" />
-                      高齢者と同居
-                    </label>
-                  </div>
-                </div>
-              </section>
-
-              <div class="section-divider"></div>
-
-              <!-- Section 4: 収入・職業 -->
-              <section class="form-section">
-                <h3 class="form-section__title">収入・職業</h3>
-
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label for="income">年収 <span class="required">*</span></label>
-                    <select id="income" name="income">
-                      <option value="">年収を選択</option>
-                      <option value="100">100万円未満</option>
-                      <option value="200">100〜200万円台</option>
-                      <option value="400">300〜400万円台</option>
-                      <option value="500">500〜600万円台</option>
-                      <option value="800">700〜800万円台</option>
-                      <option value="900">900万円以上</option>
-                      <option value="回答しない">回答しない</option>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="occupation">職業 <span class="required">*</span></label>
-                    <select id="occupation" name="occupation">
-                      <option value="">職業を選択</option>
-                      <option value="employee">会社員</option>
-                      <option value="civil">公務員</option>
-                      <option value="freelance">自営業・フリーランス</option>
-                      <option value="parttime">パート・アルバイト</option>
-                      <option value="unemployed">無職</option>
-                      <option value="other">その他</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label>雇用形態</label>
-                  <div class="chip-group chip-group--radio">
-                    <label class="chip">
-                      <input type="radio" name="employment" value="fulltime" />
-                      正社員
-                    </label>
-                    <label class="chip">
-                      <input type="radio" name="employment" value="parttime" />
-                      非正規
-                    </label>
-                    <label class="chip">
-                      <input type="radio" name="employment" value="self" />
-                      自営
-                    </label>
-                    <label class="chip">
-                      <input type="radio" name="employment" value="other" />
-                      その他
-                    </label>
-                  </div>
-                </div>
-              </section>
-
-              <div class="section-divider"></div>
-
-              <!-- Section 5: 状況・予定 -->
-              <section class="form-section">
-                <h3 class="form-section__title">状況・予定</h3>
-                <p class="form-section__desc">該当するものをすべてオンにしてください</p>
-
-                <div class="form-group">
-                  <div class="toggle-wrapper">
-                    <label class="toggle-label" for="childcare">
-                      子育て中・予定あり
-                      <span class="toggle-label__sub">0〜15歳の子どもがいる、または妊娠中・予定がある</span>
-                    </label>
-                    <label class="toggle-switch">
-                      <input type="checkbox" id="childcare" name="childcare" />
-                      <span class="toggle-slider"></span>
-                    </label>
-                  </div>
-
-                  <div class="toggle-wrapper">
-                    <label class="toggle-label" for="nursing">
-                      介護中・介護予定あり
-                      <span class="toggle-label__sub">家族の介護をしている、または近い将来介護が必要な状況</span>
-                    </label>
-                    <label class="toggle-switch">
-                      <input type="checkbox" id="nursing" name="nursing" />
-                      <span class="toggle-slider"></span>
-                    </label>
-                  </div>
-
-                  <div class="toggle-wrapper">
-                    <label class="toggle-label" for="disability">
-                      障害者手帳あり
-                      <span class="toggle-label__sub">本人または同居家族が障害者手帳を所持している</span>
-                    </label>
-                    <label class="toggle-switch">
-                      <input type="checkbox" id="disability" name="disability" />
-                      <span class="toggle-slider"></span>
-                    </label>
-                  </div>
-
-                  <div class="toggle-wrapper">
-                    <label class="toggle-label" for="relocation">
-                      引っ越し・移住予定あり
-                      <span class="toggle-label__sub">都市部から地方、または都道府県をまたぐ引越しを検討している</span>
-                    </label>
-                    <label class="toggle-switch">
-                      <input type="checkbox" id="relocation" name="relocation" />
-                      <span class="toggle-slider"></span>
-                    </label>
-                  </div>
-
-                  <!-- 移住サブ質問（relocation ON時のみ表示） -->
-                  <div id="relocationSubQuestions" class="relocation-sub-section" style="display: none;">
-                    <div class="form-group">
-                      <label class="relocation-sub-label">移住を検討している地域はありますか？</label>
-                      <div class="chip-group chip-group--radio">
-                        <label class="chip">
-                          <input type="radio" name="relocationRegion" value="hokkaido" />
-                          北海道
-                        </label>
-                        <label class="chip">
-                          <input type="radio" name="relocationRegion" value="tohoku" />
-                          東北
-                        </label>
-                        <label class="chip">
-                          <input type="radio" name="relocationRegion" value="kanto" />
-                          関東
-                        </label>
-                        <label class="chip">
-                          <input type="radio" name="relocationRegion" value="chubu" />
-                          中部
-                        </label>
-                        <label class="chip">
-                          <input type="radio" name="relocationRegion" value="kinki" />
-                          近畿
-                        </label>
-                        <label class="chip">
-                          <input type="radio" name="relocationRegion" value="chugoku" />
-                          中国
-                        </label>
-                        <label class="chip">
-                          <input type="radio" name="relocationRegion" value="shikoku" />
-                          四国
-                        </label>
-                        <label class="chip">
-                          <input type="radio" name="relocationRegion" value="kyushu" />
-                          九州・沖縄
-                        </label>
-                        <label class="chip">
-                          <input type="radio" name="relocationRegion" value="undecided" />
-                          まだ決まっていない
-                        </label>
-                      </div>
-                    </div>
-                    <div class="form-group" id="relocationOpenToOtherGroup">
-                      <label class="relocation-sub-label">条件に合う支援制度が充実している地域も知りたいですか？</label>
-                      <div class="chip-group chip-group--radio">
-                        <label class="chip">
-                          <input type="radio" name="relocationOpenToOther" value="yes" />
-                          はい
-                        </label>
-                        <label class="chip">
-                          <input type="radio" name="relocationOpenToOther" value="no" />
-                          いいえ
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="toggle-wrapper">
-                    <label class="toggle-label" for="startup">
-                      開業・起業予定あり
-                      <span class="toggle-label__sub">新しいビジネスの立ち上げや独立を考えている</span>
-                    </label>
-                    <label class="toggle-switch">
-                      <input type="checkbox" id="startup" name="startup" />
-                      <span class="toggle-slider"></span>
-                    </label>
-                  </div>
-
-                  <div class="toggle-wrapper">
-                    <label class="toggle-label" for="housing">
-                      住宅購入予定あり
-                      <span class="toggle-label__sub">新築・中古問わず住宅の購入を検討している</span>
-                    </label>
-                    <label class="toggle-switch">
-                      <input type="checkbox" id="housing" name="housing" />
-                      <span class="toggle-slider"></span>
-                    </label>
-                  </div>
-
-                  <div class="toggle-wrapper">
-                    <label class="toggle-label" for="car">
-                      車の購入予定あり
-                      <span class="toggle-label__sub">新車・中古車・電気自動車などの購入を検討している</span>
-                    </label>
-                    <label class="toggle-switch">
-                      <input type="checkbox" id="car" name="car" />
-                      <span class="toggle-slider"></span>
-                    </label>
-                  </div>
-                </div>
-              </section>
-
-              <div class="section-divider"></div>
-
-              <!-- Section 7: 重視する条件 -->
-              <section class="form-section">
-                <h3 class="form-section__title">重視する条件</h3>
-                <p class="form-section__desc">複数選択できます</p>
-
-                <div class="form-group">
-                  <div class="chip-group chip-group--checkbox">
-                    <label class="chip">
-                      <input type="checkbox" name="priorities" value="immediate" />
-                      ⚡ すぐもらえる
-                    </label>
-                    <label class="chip">
-                      <input type="checkbox" name="priorities" value="large_amount" />
-                      💰 金額が大きい
-                    </label>
-                    <label class="chip">
-                      <input type="checkbox" name="priorities" value="easy" />
-                      ✅ 手続きが簡単
-                    </label>
-                    <label class="chip">
-                      <input type="checkbox" name="priorities" value="future_use" />
-                      📅 将来使える
-                    </label>
-                    <label class="chip">
-                      <input type="checkbox" name="priorities" value="post_move" />
-                      🗾 引越し後に使える
-                    </label>
-                  </div>
-                </div>
-              </section>
-
-              <!-- フォームフッター・送信ボタン -->
-              <div class="form-footer">
-                <button
-                  type="submit"
-                  id="submitBtn"
-                  class="btn-primary btn-primary--full btn-primary--large"
-                >
-                  <span id="submitBtnSpinner" style="display:none; width:20px; height:20px; border:3px solid rgba(255,255,255,0.4); border-top-color:white; border-radius:50%; animation: spin 0.8s linear infinite;"></span>
-                  <span id="submitBtnText">おすすめ制度を診断する →</span>
-                </button>
-              </div>
-
-            </form>
-          </div>
-        </div>
-        <!-- /右カラム -->
-
+      <!-- タブコンテンツ：すぐ受け取れそう -->
+      <div
+        id="tabNow"
+        class="tab-content"
+        role="tabpanel"
+        aria-labelledby="tab-now"
+        style="display: none;"
+      >
+        <!-- recommend.js により動的生成 -->
       </div>
-      <!-- /main-layout -->
+
+      <!-- タブコンテンツ：将来・条件次第 -->
+      <div
+        id="tabFuture"
+        class="tab-content"
+        role="tabpanel"
+        aria-labelledby="tab-future"
+        style="display: none;"
+      >
+        <!-- recommend.js により動的生成 -->
+      </div>
+
+      <!-- タブコンテンツ：移住するなら -->
+      <div
+        id="tabRelocation"
+        class="tab-content"
+        role="tabpanel"
+        aria-labelledby="tab-relocation"
+        style="display: none;"
+      >
+        <!-- recommend.js により動的生成 -->
+      </div>
+
+      <!-- 空の状態テンプレート（非表示） -->
+      <div id="emptyState" class="empty-state" style="display: none;" aria-hidden="true">
+        <div class="empty-state__icon">🔍</div>
+        <div class="empty-state__title">該当する制度が見つかりませんでした</div>
+        <div class="empty-state__text">
+          検索条件やフィルターを変更してお試しください。<br>
+          または<a href="account.html" style="color: var(--color-secondary); text-decoration: underline;">入力情報を変更</a>することでより多くの制度が表示される場合があります。
+        </div>
+      </div>
+
     </div>
     <!-- /container -->
-
   </main>
 
-  <script src="app.js"></script>
+  <script src="recommend.js"></script>
 </body>
 </html>

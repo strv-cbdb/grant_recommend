@@ -374,7 +374,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // 1200ms後にrecommend.htmlへ遷移
       setTimeout(() => {
-        window.location.href = 'recommend.html';
+        window.location.href = 'index.html';
       }, 1200);
     });
   }
