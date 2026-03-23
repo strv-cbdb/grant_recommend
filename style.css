@@ -2476,21 +2476,39 @@ select:focus {
 
   .tab-btn {
     flex: 1;
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
+    gap: var(--space-1);
     border-radius: var(--radius-lg);
-    border-bottom: none;
+    border: none;
     margin-bottom: 0;
-    padding: var(--space-2) var(--space-3);
+    padding: 0 var(--space-3);
     font-size: 0.75rem;
+    line-height: 1;
     color: var(--color-text-secondary);
     min-width: 80px;
+    height: 36px;
+    box-sizing: border-box;
+    white-space: nowrap;
+  }
+
+  .tab-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 3px;
+    font-size: 10px;
+    line-height: 1;
+    flex-shrink: 0;
   }
 
   /* アクティブタブ: 白背景 + 影でリフトアップ */
   .tab-btn.active {
     background: var(--color-surface);
     color: var(--color-text-primary);
-    border-bottom-color: transparent;
     box-shadow: var(--shadow-sm);
     font-weight: var(--font-weight-semibold);
   }
