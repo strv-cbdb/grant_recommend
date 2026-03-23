@@ -91,9 +91,9 @@ function renderDetail(subsidy) {
   };
 
   const urgencyMap = {
-    high: { label: '緊急度：高', cls: 'badge--red pulse' },
-    medium: { label: '緊急度：中', cls: 'badge--orange' },
-    low: { label: '緊急度：低', cls: 'badge--gray' },
+    high: { label: 'おすすめ度：高', cls: 'badge--red pulse' },
+    medium: { label: 'おすすめ度：中', cls: 'badge--orange' },
+    low: { label: 'おすすめ度：低', cls: 'badge--gray' },
   };
   const urgencyInfo = urgencyMap[subsidy.urgency] || urgencyMap['low'];
 
@@ -204,7 +204,7 @@ function renderDetail(subsidy) {
         <div class="detail-actions">
           ${hasOfficialUrl
             ? `<a href="${subsidy.official_url}" class="btn-primary btn-primary--full" target="_blank" rel="noopener">公式サイトで確認する →</a>`
-            : `<span class="btn-primary btn-primary--full detail-btn-disabled">公式サイトを確認する</span>`
+            : `<a href="#" class="btn-primary btn-primary--full">公式サイトを確認する</a>`
           }
           <a href="recommend.html" class="btn-outline detail-btn-back">← 診断結果に戻る</a>
         </div>

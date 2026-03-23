@@ -82,7 +82,6 @@
             <option value="score">おすすめ順</option>
             <option value="amount">金額が多い順</option>
             <option value="difficulty">申請しやすい順</option>
-            <option value="urgency">緊急度順</option>
           </select>
         </div>
       </div>
@@ -130,6 +129,19 @@
         >
           📅 将来・条件次第
           <span class="tab-count" id="tabCountFuture">0</span>
+        </button>
+        <!-- 移住するならタブ（relocation=true の場合のみ表示） -->
+        <button
+          class="tab-btn"
+          data-tab="relocation"
+          role="tab"
+          aria-selected="false"
+          aria-controls="tabRelocation"
+          id="tabBtnRelocation"
+          style="display: none;"
+        >
+          🗾 移住するなら
+          <span class="tab-count" id="tabCountRelocation">0</span>
         </button>
       </nav>
 
@@ -193,6 +205,17 @@
         class="tab-content"
         role="tabpanel"
         aria-labelledby="tab-future"
+        style="display: none;"
+      >
+        <!-- recommend.js により動的生成 -->
+      </div>
+
+      <!-- タブコンテンツ：移住するなら -->
+      <div
+        id="tabRelocation"
+        class="tab-content"
+        role="tabpanel"
+        aria-labelledby="tab-relocation"
         style="display: none;"
       >
         <!-- recommend.js により動的生成 -->

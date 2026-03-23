@@ -31,6 +31,8 @@ const DEFAULT_PROFILE = {
   nursing: 'false',
   disability: 'false',
   relocation: 'true',
+  relocationRegion: 'tohoku',
+  relocationOpenToOther: 'yes',
   startup: 'false',
   housing: 'false',
   car: 'false',
@@ -198,11 +200,11 @@ function scoreSubsidy(subsidy, profile) {
 // カードレンダリング
 // ===================================
 function renderSubsidyCard(subsidy, score) {
-  // 緊急度バッジ
+  // おすすめ度バッジ
   const urgencyMap = {
-    high: { label: '緊急度：高', cls: 'badge--red pulse', dot: '🔴' },
-    medium: { label: '緊急度：中', cls: 'badge--orange', dot: '🟡' },
-    low: { label: '緊急度：低', cls: 'badge--gray', dot: '⚪' },
+    high: { label: 'おすすめ度：高', cls: 'badge--red pulse', dot: '🔴' },
+    medium: { label: 'おすすめ度：中', cls: 'badge--orange', dot: '🟡' },
+    low: { label: 'おすすめ度：低', cls: 'badge--gray', dot: '⚪' },
   };
   const urgencyInfo = urgencyMap[subsidy.urgency] || urgencyMap['low'];
 
@@ -341,6 +343,95 @@ function renderSubsidyCard(subsidy, score) {
 }
 
 // ===================================
+// 移住カードのレンダリング
+// ===================================
+function renderRelocationCard(subsidy) {
+  const regionLabel = subsidy.municipality || subsidy.region_group || '全国';
+  const regionGroup = subsidy.region_group || '';
+  const reason = subsidy.recommended_area_reason || '';
+
+  // 地域グループバッジの色
+  const regionColorMap = {
+    '東北': 'badge--cyan',
+    '関東': 'badge--blue',
+    '全国': 'badge--navy',
+  };
+  const regionBadgeCls = regionColorMap[regionGroup] || 'badge--gray';
+
+  // 生活支援タグの抽出（tags から）
+  const featureTags = subsidy.tags.split('|').filter(t =>
+    ['子育て', '住宅', '生活支援', '就業', '起業'].includes(t)
+  );
+  const featureHTML = featureTags.map(t =>
+    `<span class="relocation-feature-tag">${t}</span>`
+  ).join('');
+
+  // 通知状態
+  const isNotified = notifications[subsidy.id] || false;
+  const bellIcon = isNotified ? '🔔' : '🔕';
+  const bellActiveCls = isNotified ? 'active' : '';
+
+  return `
+    <div class="subsidy-card relocation-card" data-id="${subsidy.id}" style="animation-delay: ${Math.random() * 0.3}s">
+      <div class="relocation-card__header">
+        <div class="relocation-card__region">
+          <span class="badge ${regionBadgeCls}">${regionGroup || '全国'}</span>
+          <span class="relocation-card__municipality">${regionLabel}</span>
+        </div>
+        <span class="relocation-badge">🗾 移住支援</span>
+      </div>
+
+      <div class="card-header">
+        <div class="card-header__info">
+          <div class="card-header__name">${subsidy.subsidy_name}</div>
+          <div class="card-header__badges">
+            <span class="badge badge--green">移住</span>
+            <span class="ai-badge">✦ AIおすすめ</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-amount">
+          <span class="card-amount__label">支援額の目安</span>
+          <span class="card-amount__value">${subsidy.amount}</span>
+        </div>
+
+        <p class="card-summary">${subsidy.summary}</p>
+
+        ${reason ? `
+        <div class="relocation-reason">
+          <span class="relocation-reason__icon">🏡</span>
+          <span class="relocation-reason__text">${reason}</span>
+        </div>` : ''}
+
+        ${featureHTML ? `<div class="relocation-features">${featureHTML}</div>` : ''}
+      </div>
+
+      <div class="card-footer">
+        <div class="card-meta-header">
+          <div class="card-footer__left"></div>
+          <button
+            class="btn-icon ${bellActiveCls}"
+            title="${isNotified ? '通知設定済み' : '通知を受け取る'}"
+            onclick="toggleNotification('${subsidy.id}', this)"
+            aria-label="${isNotified ? '通知設定済み' : '通知を受け取る'}"
+          >${bellIcon}</button>
+        </div>
+        <div class="card-footer__right">
+          <a href="${subsidy.official_url}" class="btn-outline btn-small" target="_blank" rel="noopener">
+            公式サイト
+          </a>
+          <button class="btn-primary btn-small" onclick="showDetail('${subsidy.id}')">
+            詳しく見る
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ===================================
 // スケルトンカードのレンダリング
 // ===================================
 function renderSkeletonCards(count = 4) {
@@ -373,6 +464,9 @@ function getTabSubsidies(tab) {
         (s.urgency === 'low' || s.recommendation_type === 'future') && s.score >= 20
       );
       break;
+    case 'relocation':
+      filtered = getRelocationSubsidies();
+      break;
     case 'recommend':
     default:
       filtered = scoredSubsidies.filter(s => s.score >= 30);
@@ -380,6 +474,54 @@ function getTabSubsidies(tab) {
   }
 
   return filtered;
+}
+
+// ===================================
+// 移住タブ用サブシディの取得とソート
+// ===================================
+function getRelocationSubsidies() {
+  const region = userProfile.relocationRegion || 'undecided';
+  const openToOther = userProfile.relocationOpenToOther === 'yes';
+
+  // relocation_support_flag が true のものを対象
+  let candidates = scoredSubsidies.filter(s => s.relocation_support_flag === 'true');
+
+  // パターンA: 地方が決まっている（東北 or 関東）
+  if (region === 'tohoku') {
+    candidates = candidates.filter(s => s.region_group === '東北' || s.region_group === '全国');
+    candidates.sort((a, b) => {
+      const aScore = (a.region_group === '東北' ? 10 : 0) + a.score;
+      const bScore = (b.region_group === '東北' ? 10 : 0) + b.score;
+      return bScore - aScore;
+    });
+  } else if (region === 'kanto') {
+    candidates = candidates.filter(s => s.region_group === '関東' || s.region_group === '全国');
+    candidates.sort((a, b) => {
+      const aScore = (a.region_group === '関東' ? 10 : 0) + a.score;
+      const bScore = (b.region_group === '関東' ? 10 : 0) + b.score;
+      return bScore - aScore;
+    });
+  } else if (openToOther) {
+    // パターンB: 地方未定 + 制度が強い地域にも興味あり → 支援額・優先度で並べる
+    const priorityOrder = { high: 3, medium: 2, low: 1 };
+    candidates.sort((a, b) => {
+      const aP = priorityOrder[a.relocation_priority] || 0;
+      const bP = priorityOrder[b.relocation_priority] || 0;
+      return bP - aP || parseInt(b.amount_raw || 0) - parseInt(a.amount_raw || 0);
+    });
+  } else {
+    // パターンC: 地方未定 + 興味なし → スコア順の汎用表示
+    candidates.sort((a, b) => b.score - a.score);
+  }
+
+  // 最低1件は表示する（候補がなければ relocation 条件のあるものを fallback）
+  if (candidates.length === 0) {
+    candidates = scoredSubsidies.filter(s =>
+      s.target_conditions.includes('relocation')
+    ).sort((a, b) => b.score - a.score).slice(0, 3);
+  }
+
+  return candidates;
 }
 
 // ===================================
@@ -429,19 +571,37 @@ function sortSubsidies(subsidies, sortKey) {
 // タブコンテンツのレンダリング
 // ===================================
 function renderTabContent(tab) {
-  let subsidies = getTabSubsidies(tab);
-  subsidies = filterByCategory(subsidies, currentCategory);
-  subsidies = filterBySearch(subsidies, searchQuery);
-  subsidies = sortSubsidies(subsidies, currentSort);
-
   const tabIdMap = {
     recommend: 'tabRecommend',
     now: 'tabNow',
     future: 'tabFuture',
+    relocation: 'tabRelocation',
   };
   const containerId = tabIdMap[tab];
   const container = document.getElementById(containerId);
   if (!container) return;
+
+  // 移住タブは専用の取得・レンダリングを行う
+  if (tab === 'relocation') {
+    const subsidies = getRelocationSubsidies();
+    if (subsidies.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state__icon">🗾</div>
+          <div class="empty-state__title">移住向け制度が見つかりませんでした</div>
+          <div class="empty-state__text">条件を変えて再度お試しください</div>
+        </div>
+      `;
+      return;
+    }
+    container.innerHTML = `<div class="cards-list">${subsidies.map(s => renderRelocationCard(s)).join('')}</div>`;
+    return;
+  }
+
+  let subsidies = getTabSubsidies(tab);
+  subsidies = filterByCategory(subsidies, currentCategory);
+  subsidies = filterBySearch(subsidies, searchQuery);
+  subsidies = sortSubsidies(subsidies, currentSort);
 
   if (subsidies.length === 0) {
     container.innerHTML = `
@@ -464,6 +624,9 @@ function renderAllTabs() {
   renderTabContent('recommend');
   renderTabContent('now');
   renderTabContent('future');
+  if (userProfile.relocation === 'true') {
+    renderTabContent('relocation');
+  }
   updateTabCounts();
 }
 
@@ -482,6 +645,12 @@ function updateTabCounts() {
   if (nowBadge) nowBadge.textContent = nowCount;
   if (futureBadge) futureBadge.textContent = futureCount;
   if (recommendBadge) recommendBadge.textContent = recommendCount;
+
+  if (userProfile.relocation === 'true') {
+    const relocationCount = getRelocationSubsidies().length;
+    const relocationBadge = document.getElementById('tabCountRelocation');
+    if (relocationBadge) relocationBadge.textContent = relocationCount;
+  }
 }
 
 // ===================================
@@ -592,6 +761,7 @@ function setupTabs() {
         recommend: 'tabRecommend',
         now: 'tabNow',
         future: 'tabFuture',
+        relocation: 'tabRelocation',
       };
       const activeContainer = document.getElementById(tabIdMap[tab]);
       if (activeContainer) activeContainer.style.display = 'block';
@@ -740,6 +910,12 @@ async function init() {
   await new Promise(resolve => setTimeout(resolve, 800));
 
   hideLoading();
+
+  // 移住するならタブの表示制御
+  const relocationTabBtn = document.getElementById('tabBtnRelocation');
+  if (relocationTabBtn) {
+    relocationTabBtn.style.display = userProfile.relocation === 'true' ? 'inline-flex' : 'none';
+  }
 
   // UI更新
   renderProfileSummary();

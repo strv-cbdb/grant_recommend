@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded', function () {
     nursing: 'false',
     disability: 'false',
     relocation: 'true',
+    relocationRegion: 'tohoku',
+    relocationOpenToOther: 'yes',
     startup: 'false',
     housing: 'false',
     car: 'false',
@@ -78,6 +80,26 @@ document.addEventListener('DOMContentLoaded', function () {
       const el = document.getElementById(id);
       if (el) el.checked = DEMO_PROFILE[id] === 'true';
     });
+
+    // 移住サブ質問のプリセット
+    if (DEMO_PROFILE.relocation === 'true') {
+      const subSection = document.getElementById('relocationSubQuestions');
+      if (subSection) subSection.style.display = 'block';
+    }
+    if (DEMO_PROFILE.relocationRegion) {
+      const regionRadio = document.querySelector(`input[name="relocationRegion"][value="${DEMO_PROFILE.relocationRegion}"]`);
+      if (regionRadio) {
+        regionRadio.checked = true;
+        regionRadio.closest('.chip')?.classList.add('active');
+      }
+    }
+    if (DEMO_PROFILE.relocationOpenToOther) {
+      const otherRadio = document.querySelector(`input[name="relocationOpenToOther"][value="${DEMO_PROFILE.relocationOpenToOther}"]`);
+      if (otherRadio) {
+        otherRadio.checked = true;
+        otherRadio.closest('.chip')?.classList.add('active');
+      }
+    }
 
     // 現在困っていること（チェックボックス）
     DEMO_PROFILE.concerns.forEach(val => {
@@ -278,6 +300,17 @@ document.addEventListener('DOMContentLoaded', function () {
       profile[id] = el ? String(el.checked) : 'false';
     });
 
+    // 移住サブ質問（relocation ON時のみ収集）
+    if (profile.relocation === 'true') {
+      const regionEl = document.querySelector('input[name="relocationRegion"]:checked');
+      profile.relocationRegion = regionEl ? regionEl.value : 'undecided';
+      const otherEl = document.querySelector('input[name="relocationOpenToOther"]:checked');
+      profile.relocationOpenToOther = otherEl ? otherEl.value : 'no';
+    } else {
+      profile.relocationRegion = '';
+      profile.relocationOpenToOther = '';
+    }
+
     // 現在困っていること
     const concernEls = document.querySelectorAll('input[name="concerns"]:checked');
     profile.concerns = Array.from(concernEls).map(el => el.value);
@@ -346,6 +379,32 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // ===================================
+  // 移住サブ質問の表示制御
+  // ===================================
+  function setupRelocationToggle() {
+    const relocationCheckbox = document.getElementById('relocation');
+    const subSection = document.getElementById('relocationSubQuestions');
+    if (!relocationCheckbox || !subSection) return;
+
+    relocationCheckbox.addEventListener('change', function () {
+      if (this.checked) {
+        subSection.style.display = 'block';
+      } else {
+        subSection.style.display = 'none';
+        // 非表示時はサブ質問の選択をリセット
+        document.querySelectorAll('input[name="relocationRegion"]').forEach(r => {
+          r.checked = false;
+          r.closest('.chip')?.classList.remove('active');
+        });
+        document.querySelectorAll('input[name="relocationOpenToOther"]').forEach(r => {
+          r.checked = false;
+          r.closest('.chip')?.classList.remove('active');
+        });
+      }
+    });
+  }
+
+  // ===================================
   // 入力フィールドのリアルタイムイベント
   // ===================================
   function setupInputListeners() {
@@ -369,6 +428,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // ===================================
   prefillForm();
   setupChips();
+  setupRelocationToggle();
   setupInputListeners();
   updateProgress();
 });

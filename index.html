@@ -69,7 +69,7 @@
             <div class="value-card__icon value-card__icon--green">⚡</div>
             <div class="value-card__content">
               <div class="value-card__title">今すぐ申請できる制度が分かる</div>
-              <div class="value-card__desc">緊急度と申請のしやすさで、すぐに動ける制度を優先表示します。</div>
+              <div class="value-card__desc">申請のしやすさで、すぐに動ける制度を優先表示します。</div>
             </div>
           </div>
           <div class="value-card">
@@ -364,6 +364,40 @@
                       <input type="checkbox" id="relocation" name="relocation" />
                       <span class="toggle-slider"></span>
                     </label>
+                  </div>
+
+                  <!-- 移住サブ質問（relocation ON時のみ表示） -->
+                  <div id="relocationSubQuestions" class="relocation-sub-section" style="display: none;">
+                    <div class="form-group">
+                      <label class="relocation-sub-label">移住を検討している地域はありますか？</label>
+                      <div class="chip-group chip-group--radio">
+                        <label class="chip">
+                          <input type="radio" name="relocationRegion" value="tohoku" />
+                          東北
+                        </label>
+                        <label class="chip">
+                          <input type="radio" name="relocationRegion" value="kanto" />
+                          関東
+                        </label>
+                        <label class="chip">
+                          <input type="radio" name="relocationRegion" value="undecided" />
+                          まだ決まっていない
+                        </label>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="relocation-sub-label">条件に合う支援制度が充実している地域も知りたいですか？</label>
+                      <div class="chip-group chip-group--radio">
+                        <label class="chip">
+                          <input type="radio" name="relocationOpenToOther" value="yes" />
+                          Yes
+                        </label>
+                        <label class="chip">
+                          <input type="radio" name="relocationOpenToOther" value="no" />
+                          No
+                        </label>
+                      </div>
+                    </div>
                   </div>
 
                   <div class="toggle-wrapper">
