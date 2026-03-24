@@ -575,13 +575,11 @@ select:focus {
 }
 
 .btn-primary:hover {
-  transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   background: var(--color-primary-dark);
 }
 
 .btn-primary:active {
-  transform: translateY(0);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
 }
 
@@ -2731,7 +2729,6 @@ select:focus {
 
   /* フォームの送信ボタンエリアを下部固定のCTAバー風に */
   .form-card .form-footer {
-    position: sticky;
     bottom: 0;
     background: var(--color-surface);
     margin: var(--space-8) calc(-1 * var(--space-5)) 0;
