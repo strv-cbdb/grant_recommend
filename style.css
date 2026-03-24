@@ -793,8 +793,8 @@ select:focus {
 }
 
 .card-amount {
-  background: #F8F8FA;
-  border: 1px solid var(--color-border);
+  background: #f0f6ff;
+  border: 1px solid #dbeafe;
   border-radius: var(--radius-lg);
   padding: var(--space-3) var(--space-4);
   margin-bottom: var(--space-4);
@@ -828,8 +828,8 @@ select:focus {
   display: flex;
   align-items: flex-start;
   gap: var(--space-2);
-  background: #F8F8FA;
-  border-left: 3px solid var(--color-border-dark);
+  background: #ecfdf5;
+  border-left: 4px solid #10b981;
   padding: var(--space-2) var(--space-3);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   margin-bottom: var(--space-4);
@@ -843,7 +843,7 @@ select:focus {
 
 .card-reason__text {
   font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
+  color: #065f46;
   line-height: var(--line-height-relaxed);
 }
 
