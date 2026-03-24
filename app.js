@@ -441,3 +441,9 @@ document.addEventListener('DOMContentLoaded', function () {
   setupInputListeners();
   updateProgress();
 });
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('./service-worker.js');
+  });
+}

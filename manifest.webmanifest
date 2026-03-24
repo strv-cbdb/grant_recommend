@@ -1,0 +1,20 @@
+{
+  "name": "BenefitAI",
+  "short_name": "BenefitAI",
+  "description": "あなたに最適な補助金・支援制度をAIが診断します。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#1E293B",
+  "background_color": "#F5F5F7",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "icon/app_icon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -953,3 +953,9 @@ window.addEventListener('resize', function () {
 // DOMContentLoaded
 // ===================================
 document.addEventListener('DOMContentLoaded', init);
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('./service-worker.js');
+  });
+}

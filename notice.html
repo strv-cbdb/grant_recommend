@@ -6,6 +6,9 @@
   <meta name="description" content="補助金・支援制度の新着通知 | BenefitAI" />
   <title>通知 | BenefitAI</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#1E293B" />
+  <link rel="apple-touch-icon" href="icon/app_icon.png" />
 </head>
 <body>
 
@@ -87,5 +90,12 @@
     </a>
   </nav>
 
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('./service-worker.js');
+      });
+    }
+  </script>
 </body>
 </html>
