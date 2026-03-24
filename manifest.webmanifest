@@ -1,6 +1,6 @@
 {
-  "name": "BenefitAI",
-  "short_name": "BenefitAI",
+  "name": "補助金レコメンド",
+  "short_name": "補助金レコメンド",
   "description": "あなたに最適な補助金・支援制度をAIが診断します。",
   "start_url": "./index.html",
   "scope": "./",
