@@ -1,4 +1,4 @@
-const CACHE_NAME = 'benefitai-v1';
+const CACHE_NAME = '補助金レコメンド-v1';
 const PRECACHE_URLS = [
   './index.html',
   './recommend.html',

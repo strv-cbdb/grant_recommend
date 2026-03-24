@@ -1,5 +1,5 @@
 /**
- * BenefitAI - 制度詳細表示スクリプト
+ * 補助金レコメンド - 制度詳細表示スクリプト
  */
 
 // ===================================
@@ -243,7 +243,7 @@ async function init() {
     return;
   }
 
-  document.title = `${subsidy.subsidy_name} | BenefitAI`;
+  document.title = `${subsidy.subsidy_name} | 補助金レコメンド`;
   document.getElementById('detailLoading').style.display = 'none';
   renderDetail(subsidy);
 }
